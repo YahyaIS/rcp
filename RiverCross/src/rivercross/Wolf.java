@@ -17,7 +17,9 @@ import javafx.scene.input.MouseEvent;
 import javax.imageio.ImageIO;
 
 public class Wolf implements ICrosser{
-
+    private Side left=new Side(1);
+    private Side right=new Side(2);
+    private Level1 level1;
     private int place=0;
     private Rectangle2D rec;
     private int posX;
@@ -39,6 +41,7 @@ public class Wolf implements ICrosser{
         posX=60;
         posY=400;
         this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+        left.addLeftBank(this);
     }
     
 public void move(MouseEvent e,Raft raft) {
@@ -50,6 +53,7 @@ public void move(MouseEvent e,Raft raft) {
                 setRec(rec);
                 place++;
                 raft.addList(this);
+                left.removeLeftBank(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
@@ -58,6 +62,7 @@ public void move(MouseEvent e,Raft raft) {
                 setRec(rec);
                 place--;
                 raft.removeList(this);
+                left.addLeftBank(this);
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==2)
@@ -67,6 +72,7 @@ public void move(MouseEvent e,Raft raft) {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
+                left.addRightBank(this);
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==3)
@@ -76,6 +82,7 @@ public void move(MouseEvent e,Raft raft) {
                 setRec(rec);
                 place--;
                 raft.addList(this);
+                left.removeRightBank(this);
                 raft.setPassengers(raft.getPassengers()+1);
             }
             
@@ -95,7 +102,7 @@ public void move(MouseEvent e,Raft raft) {
 
     @Override
     public int getEatingRank() {
-        return 1;
+        return eatingRank;
     }
 
     @Override

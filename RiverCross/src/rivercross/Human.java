@@ -18,7 +18,9 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
 
 public class Human implements ICrosser {
-    
+    private Side left=new Side(1);
+    private Side right=new Side(2);
+    private Level1 level1;
     private int place = 0;
     private Rectangle2D rec;
     private int posX;
@@ -39,18 +41,18 @@ public class Human implements ICrosser {
         posX = 100;
         posY = 285;
         this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
+        left.addLeftBank(this);
     }
 
     public void move(MouseEvent e,Raft raft) {
         
-        
-            
             if (place == 0&&raft.getPassengers() < 2) {
                 posX += 150;
                 posY -= 15;
                 setRec(rec);
                 place++;
                 raft.addList(this);
+                left.removeLeftBank(this);
                 raft.setPassengers(raft.getPassengers()+1);
             } else if (place == 1) {
                 posX -= 150;
@@ -58,6 +60,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place--;
                 raft.removeList(this);
+                left.addLeftBank(this);
                 raft.setPassengers(raft.getPassengers()-1);
                 
         }
@@ -68,6 +71,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
+                left.addRightBank(this);
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==3)
@@ -77,6 +81,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place--;
                 raft.addList(this);
+                left.removeRightBank(this);
                 raft.setPassengers(raft.getPassengers()+1);
             }
     }
