@@ -26,7 +26,7 @@ public class Sheep implements ICrosser{
     private int posX;
     private int posY;
     private final int weight=0;
-    private int eatingRank=1;
+    private int eatingRank=2;
     BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
 
     public Sheep(){
@@ -39,18 +39,20 @@ public class Sheep implements ICrosser{
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        posX=25;
+        posX=40;
         posY=426;
         this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
     }
     
 public void move(MouseEvent e,Raft raft) {
+    
         if (rec.contains(e.getX(), e.getY())) {
             if (place == 0&&raft.getPassengers() < 2) {
                 posX += 230;
                 //posY -= 15;
                 setRec(rec);
                 place++;
+                raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
@@ -58,7 +60,26 @@ public void move(MouseEvent e,Raft raft) {
                 //posY += 15;
                 setRec(rec);
                 place--;
+                raft.removeList(this);
                 raft.setPassengers(raft.getPassengers()-1);
+            }
+            else if(place==2)
+            {
+                posX+=230;
+                //posX+=15;
+                setRec(rec);
+                place++;
+                raft.removeList(this);
+                raft.setPassengers(raft.getPassengers()-1);
+            }
+            else if(place==3)
+            {
+                posX-=230;
+               // posY-=15;
+                setRec(rec);
+                place--;
+                raft.addList(this);
+                raft.setPassengers(raft.getPassengers()+1);
             }
 
         }
@@ -104,6 +125,7 @@ public void move(MouseEvent e,Raft raft) {
     }
 
     public void setPlace(int place) {
+        
         this.place = place;
     }
 
