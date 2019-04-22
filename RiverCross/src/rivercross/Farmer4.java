@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
 
-public class Human implements ICrosser {
+public class Farmer4 implements ICrosser {
     
     private int place = 0;
     private Rectangle2D rec;
@@ -27,7 +27,7 @@ public class Human implements ICrosser {
     private int eatingRank = 0;
     BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
-    public Human() {
+    public Farmer4() {
 
         File input = new File("farmer.png");
         try {
@@ -45,20 +45,20 @@ public class Human implements ICrosser {
         
         
             
-            if (place == 0&&raft.getPassengers() < 2) {
+            if (place == 0&&raft.getWeightsum()<= 100) {
                 posX += 150;
                 posY -= 15;
                 setRec(rec);
                 place++;
                 raft.addList(this);
-                raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
             } else if (place == 1) {
                 posX -= 150;
                 posY += 15;
                 setRec(rec);
                 place--;
                 raft.removeList(this);
-                raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
                 
         }
             else if(place==2)
@@ -68,7 +68,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
-                raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
             }
             else if(place==3)
             {
@@ -77,7 +77,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place--;
                 raft.addList(this);
-                raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
             }
     }
 

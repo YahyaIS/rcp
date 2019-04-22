@@ -30,6 +30,7 @@ public class Main extends Application {
     Sheep sheep = new Sheep();
     BackGround bg = new BackGround();
     StoryOne storyOne = new StoryOne();
+    StoryTwo storyTwo = new StoryTwo();
     
     
 
@@ -72,14 +73,16 @@ public class Main extends Application {
         story1.setOnAction((ActionEvent event) -> {
             
             storyOne.setStage(theStage);
-            storyOne.draw();
+            storyOne.draw(theScene, gc, bg);
+            
             
         });
         
         
         story2.setOnAction((ActionEvent event) -> {
             
-            
+            storyTwo.setStage(theStage);
+            storyTwo.draw(theScene, gc, bg);
         });
         
         
@@ -93,38 +96,38 @@ public class Main extends Application {
                 bg.drawBackground(gc, waterpic);
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
-                gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
+//                gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
 //                gc.drawImage(farmer.getImage(), farmer.getPosX(), farmer.getPosY());
 //                gc.drawImage(wolf.getImage(), wolf.getPosX(), wolf.getPosY());
 //                gc.drawImage(sheep.getImage(), sheep.getPosX(), sheep.getPosY());
 //                gc.drawImage(vegetables.getImage(), vegetables.getPosX(), vegetables.getPosY());
 //                gc.drawImage(raft.getMoveImage(), 448, 50);
-                theScene.setOnMouseClicked(
-                        (EventHandler<MouseEvent>) e -> {
-                            if (raft.getMoveRec().contains(e.getX(), e.getY())) 
-                            {
-                                raft.move(e);
-                                
-                            }
-                            else if (farmer.getRec().contains(e.getX(), e.getY())) 
-                            {
-                                farmer.move(e,raft);
-                            }
-                            else if (wolf.getRec().contains(e.getX(), e.getY())) 
-                            {
-                                wolf.move(e,raft);
-                            }
-                            else if (sheep.getRec().contains(e.getX(), e.getY())) 
-                            {
-                                sheep.move(e,raft);
-                            }
-                            else if (vegetables.getRec().contains(e.getX(), e.getY())) 
-                            {
-                                vegetables.move(e,raft);
-                                
-                            }
-                            
-                        });
+//                theScene.setOnMouseClicked(
+//                        (EventHandler<MouseEvent>) e -> {
+//                            if (raft.getMoveRec().contains(e.getX(), e.getY())) 
+//                            {
+//                                raft.move(e);
+//                                
+//                            }
+//                            else if (farmer.getRec().contains(e.getX(), e.getY())) 
+//                            {
+//                                farmer.move(e,raft);
+//                            }
+//                            else if (wolf.getRec().contains(e.getX(), e.getY())) 
+//                            {
+//                                wolf.move(e,raft);
+//                            }
+//                            else if (sheep.getRec().contains(e.getX(), e.getY())) 
+//                            {
+//                                sheep.move(e,raft);
+//                            }
+//                            else if (vegetables.getRec().contains(e.getX(), e.getY())) 
+//                            {
+//                                vegetables.move(e,raft);
+//                                
+//                            }
+//                            
+//                        });
             }
 
         }.start();
