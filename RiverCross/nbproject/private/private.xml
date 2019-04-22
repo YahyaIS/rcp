@@ -5,9 +5,11 @@
         <group>
             <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/Sheep.java</file>
             <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/Raft.java</file>
+            <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/ICrossingStrategy.java</file>
             <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/Human.java</file>
             <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/Main.java</file>
             <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/Wolf.java</file>
+            <file>file:/C:/Users/yahya/Documents/NetBeansProjects/RiverCross/src/rivercross/Vegetables.java</file>
         </group>
     </open-files>
 </project-private>
