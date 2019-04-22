@@ -18,6 +18,7 @@ public class Main extends Application {
     Side left = new Side(1);
     List<Water> waterpic = new ArrayList<>();
     Raft raft = new Raft();
+    Vegetables vegetables= new Vegetables();
     Human farmer = new Human();
     Wolf wolf = new Wolf();
     Sheep sheep = new Sheep();
@@ -52,10 +53,10 @@ public class Main extends Application {
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
-
                 gc.drawImage(farmer.getImage(), farmer.getPosX(), farmer.getPosY());
                 gc.drawImage(wolf.getImage(), wolf.getPosX(), wolf.getPosY());
                 gc.drawImage(sheep.getImage(), sheep.getPosX(), sheep.getPosY());
+                gc.drawImage(vegetables.getImage(), vegetables.getPosX(), vegetables.getPosY());
                 gc.drawImage(raft.getMoveImage(), 448, 50);
                 theScene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
@@ -64,17 +65,22 @@ public class Main extends Application {
                                 raft.move(e);
                                 
                             }
-                            if (farmer.getRec().contains(e.getX(), e.getY())) 
+                            else if (farmer.getRec().contains(e.getX(), e.getY())) 
                             {
                                 farmer.move(e,raft);
                             }
-                            if (wolf.getRec().contains(e.getX(), e.getY())) 
+                            else if (wolf.getRec().contains(e.getX(), e.getY())) 
                             {
                                 wolf.move(e,raft);
                             }
-                            if (sheep.getRec().contains(e.getX(), e.getY())) 
+                            else if (sheep.getRec().contains(e.getX(), e.getY())) 
                             {
                                 sheep.move(e,raft);
+                            }
+                            else if (vegetables.getRec().contains(e.getX(), e.getY())) 
+                            {
+                                vegetables.move(e,raft);
+                                
                             }
                             
                         });

@@ -6,6 +6,7 @@
 package rivercross;
 
 import java.awt.image.BufferedImage;
+import javafx.geometry.Rectangle2D;
 /**
  *
  * @author seif
@@ -49,5 +50,20 @@ public interface ICrosser {
      */
     public String getLabelToBeShown();
 
+public int getPosX();
+
+    public void setPosX(int posX) ;
+
+    public int getPosY();
+
+    public void setPosY(int posY);
+
+    public void setRec(Rectangle2D rec);
+
+    public Rectangle2D getRec() ;
+
+    public int getPlace() ;
+
+    public void setPlace(int place);
 
 }

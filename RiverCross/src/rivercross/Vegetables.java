@@ -16,19 +16,23 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javax.imageio.ImageIO;
 
-public class Wolf implements ICrosser{
-
+/**
+ *
+ * @author yahya
+ */
+public class Vegetables implements ICrosser{
+    
     private int place=0;
     private Rectangle2D rec;
     private int posX;
     private int posY;
     private final int weight=0;
-    private int eatingRank=1;
+    private int eatingRank=3;
     BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
 
-    public Wolf(){
+    public Vegetables(){
         
-        File input=new File("wolf.png");
+        File input=new File("green.png");
         try {
             bi= ImageIO.read(input);
         }
@@ -36,8 +40,8 @@ public class Wolf implements ICrosser{
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        posX=60;
-        posY=400;
+        posX=2;
+        posY=445;
         this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
     }
     
@@ -45,16 +49,16 @@ public void move(MouseEvent e,Raft raft) {
     
         if (rec.contains(e.getX(), e.getY())) {
             if (place == 0&&raft.getPassengers() < 2) {
-                posX += 170;
-                posY -= 15;
+                posX += 230;
+          //      posY -= 25;
                 setRec(rec);
                 place++;
                 raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
-                posX -= 170;
-                posY += 15;
+                posX -= 230;
+            //    posY += 15;
                 setRec(rec);
                 place--;
                 raft.removeList(this);
@@ -62,8 +66,8 @@ public void move(MouseEvent e,Raft raft) {
             }
             else if(place==2)
             {
-                posX+=170;
-                posY+=15;
+                posX+=230;
+          //      posY+=15;
                 setRec(rec);
                 place++;
                 raft.removeList(this);
@@ -71,8 +75,8 @@ public void move(MouseEvent e,Raft raft) {
             }
             else if(place==3)
             {
-                posX-=170;
-                posY-=15;
+                posX-=230;
+           //     posY-=15;
                 setRec(rec);
                 place--;
                 raft.addList(this);
