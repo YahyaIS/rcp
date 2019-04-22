@@ -7,10 +7,6 @@ package rivercross;
 
 import java.util.List;
 
-/**
- *
- * @author seif
- */
 public interface ICrossingStrategy{
     /**
      * @param boatRiders which the user had selected to be moved to the

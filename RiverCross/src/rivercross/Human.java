@@ -36,7 +36,7 @@ public class Human implements ICrosser {
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        posX = 85;
+        posX = 100;
         posY = 285;
         this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
     }
@@ -50,18 +50,35 @@ public class Human implements ICrosser {
                 posY -= 15;
                 setRec(rec);
                 place++;
-                
+                raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
             } else if (place == 1) {
                 posX -= 150;
                 posY += 15;
                 setRec(rec);
                 place--;
+                raft.removeList(this);
                 raft.setPassengers(raft.getPassengers()-1);
                 
-            
-
         }
+            else if(place==2)
+            {
+                posX+=150;
+                posY+=15;
+                setRec(rec);
+                place++;
+                raft.removeList(this);
+                raft.setPassengers(raft.getPassengers()-1);
+            }
+            else if(place==3)
+            {
+                posX-=150;
+                posY-=15;
+                setRec(rec);
+                place--;
+                raft.addList(this);
+                raft.setPassengers(raft.getPassengers()+1);
+            }
     }
 
     public javafx.scene.image.Image getImage() {
@@ -133,6 +150,7 @@ public class Human implements ICrosser {
     }
 
     public void setPlace(int place) {
+        
         this.place = place;
     }
 
