@@ -20,24 +20,25 @@ import javafx.stage.Stage;
  *
  * @author seif
  */
-public class StoryOne {
+public class StoryTwo {
     
     List<Water> waterpic = new ArrayList<>();
     Raft raft = new Raft();
-    Vegetables vegetables= new Vegetables();
-    Human farmer = new Human();
-    Wolf wolf = new Wolf();
-    Sheep sheep = new Sheep();
-    
+    Farmer1 farmer1 = new Farmer1();
+    Farmer2 farmer2 = new Farmer2();
+    Farmer3 farmer3 = new Farmer3();
+    Farmer4 farmer4 = new Farmer4();
+    Cat cat = new Cat();
+    Human human = new Human();
+    Stage stage;   
     Group root = new Group();
-   
-    Stage stage;
+    
+    
     
     
     
     public void draw(Scene scene,GraphicsContext gc,BackGround bg){
-        
-        for (int i = 0; i < 7; i++) {
+      for (int i = 0; i < 7; i++) {
             Water w = new Water(i * 179, 480);
             waterpic.add(w);
         }
@@ -59,34 +60,40 @@ public class StoryOne {
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
-                gc.drawImage(farmer.getImage(), farmer.getPosX(), farmer.getPosY());
-                gc.drawImage(wolf.getImage(), wolf.getPosX(), wolf.getPosY());
-                gc.drawImage(sheep.getImage(), sheep.getPosX(), sheep.getPosY());
-                gc.drawImage(vegetables.getImage(), vegetables.getPosX(), vegetables.getPosY());
+                gc.drawImage(farmer1.getImage(), farmer1.getPosX(), farmer1.getPosY());
+                gc.drawImage(farmer2.getImage(), farmer2.getPosX(), farmer2.getPosY());
+                gc.drawImage(farmer3.getImage(), farmer3.getPosX(), farmer3.getPosY());
+                gc.drawImage(farmer4.getImage(), farmer4.getPosX(), farmer4.getPosY());
+                gc.drawImage(cat.getImage(), cat.getPosX(), cat.getPosY());
                 gc.drawImage(raft.getMoveImage(), 448, 50);
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
                             if (raft.getMoveRec().contains(e.getX(), e.getY())) 
                             {
-                                raft.move(e);
+                                
+                                raft.move1(e);
                                 
                             }
-                            else if (farmer.getRec().contains(e.getX(), e.getY())) 
+                            else if (farmer1.getRec().contains(e.getX(), e.getY())) 
                             {
-                                farmer.move(e,raft);
+                                farmer1.move(e,raft);
                             }
-                            else if (wolf.getRec().contains(e.getX(), e.getY())) 
+                            else if (farmer2.getRec().contains(e.getX(), e.getY())) 
                             {
-                                wolf.move(e,raft);
+                                farmer2.move(e,raft);
                             }
-                            else if (sheep.getRec().contains(e.getX(), e.getY())) 
+                            else if (farmer3.getRec().contains(e.getX(), e.getY())) 
                             {
-                                sheep.move(e,raft);
+                                farmer3.move(e,raft);
                             }
-                            else if (vegetables.getRec().contains(e.getX(), e.getY())) 
+                            else if (human.getRec().contains(e.getX(), e.getY())) 
                             {
-                                vegetables.move(e,raft);
+                                farmer4.move(e,raft);
                                 
+                            }
+                             else if (cat.getRec().contains(e.getX(), e.getY())) 
+                            {
+                                cat.move(e,raft);
                             }
                             
                         });

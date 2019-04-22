@@ -25,8 +25,12 @@ public class Raft {
     private Rectangle2D rec;
     private Rectangle2D moveRec;
     private int passengers = 0;
+    private int weightsum=0;
     private int posX;
     private int posY;
+    
+    
+    
     BufferedImage bim = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
     BufferedImage bi = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
@@ -59,6 +63,7 @@ public class Raft {
             ICrosser crosser1 = passengerList.remove(0);
             crosser1.setPosX(posX + 60);
             crosser1.setRec(rec);
+            
             crosser1.setPlace(crosser1.getPlace() + 1);
             
             if (!passengerList.isEmpty()) {
@@ -79,6 +84,55 @@ public class Raft {
             ICrosser crosser1 = passengerList.remove(0);
             crosser1.setPosX(posX + 60);
             crosser1.setRec(rec);
+          
+            crosser1.setPlace(crosser1.getPlace() - 1);
+            
+            if (!passengerList.isEmpty()) {
+                
+                ICrosser crosser2 = passengerList.remove(0);
+                crosser2.setPosX(posX + 45);
+                crosser2.setRec(rec);
+                crosser2.setPlace(crosser2.getPlace() - 1);
+                passengerList.add(crosser2);
+            }
+            passengerList.add(crosser1);
+            setRec(rec);
+            place--;
+            //    passengers=0;
+        }
+
+    }
+    
+    
+     public void move1(MouseEvent e) {
+
+        if (place == 0 && weightsum <=100) {
+            posX += 460;
+            ICrosser crosser1 = passengerList.remove(0);
+            crosser1.setPosX(posX + 60);
+            crosser1.setRec(rec);
+           
+            crosser1.setPlace(crosser1.getPlace() + 1);
+            
+            if (!passengerList.isEmpty()) {
+                ICrosser crosser2 = passengerList.remove(0);
+                crosser2.setPosX(posX + 45);
+                crosser2.setRec(rec);
+                crosser2.setPlace(crosser2.getPlace() + 1);
+                passengerList.add(crosser2);
+            }
+            passengerList.add(crosser1);
+            setRec(rec);
+            place++;
+
+            //  passengers=0;
+        } else if (place == 1 && weightsum <=100) {
+            
+            posX -= 460;
+            ICrosser crosser1 = passengerList.remove(0);
+            crosser1.setPosX(posX + 60);
+            crosser1.setRec(rec);
+            
             crosser1.setPlace(crosser1.getPlace() - 1);
             
             if (!passengerList.isEmpty()) {
@@ -162,5 +216,15 @@ public class Raft {
     public void setMoveRec(Rectangle2D moveRec) {
         this.moveRec = moveRec;
     }
+
+    public int getWeightsum() {
+        return weightsum;
+    }
+
+    public void setWeightsum(int weightsum) {
+        this.weightsum = weightsum;
+    }
+    
+    
 
 }

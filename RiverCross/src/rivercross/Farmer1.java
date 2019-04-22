@@ -5,39 +5,42 @@
  */
 package rivercross;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javax.imageio.ImageIO;
 
-public class Human implements ICrosser {
-    
+/**
+ *
+ * @author seif
+ */
+public class Farmer1 implements ICrosser {
+
     private int place = 0;
     private Rectangle2D rec;
     private int posX;
     private int posY;
-    private final int weight = 80;
+    private final int weight = 40;
     private int eatingRank = 0;
     BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
-    public Human() {
+    public Farmer1() {
 
-        File input = new File("farmer.png");
+        File input = new File("farmer1.png");
         try {
             bi = ImageIO.read(input);
         } catch (IOException ex) {
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        posX = 100;
-        posY = 285;
+        posX = 30;
+        posY = 435;
         this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
     }
 
@@ -45,20 +48,20 @@ public class Human implements ICrosser {
         
         
             
-            if (place == 0&&raft.getPassengers() < 2) {
+            if (place == 0&&raft.getWeightsum()<= 100) {
                 posX += 150;
                 posY -= 15;
                 setRec(rec);
                 place++;
                 raft.addList(this);
-                raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
             } else if (place == 1) {
                 posX -= 150;
                 posY += 15;
                 setRec(rec);
                 place--;
                 raft.removeList(this);
-                raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
                 
         }
             else if(place==2)
@@ -68,7 +71,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
-                raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
             }
             else if(place==3)
             {
@@ -77,7 +80,7 @@ public class Human implements ICrosser {
                 setRec(rec);
                 place--;
                 raft.addList(this);
-                raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
             }
     }
 
