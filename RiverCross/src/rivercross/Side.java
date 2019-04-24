@@ -8,16 +8,19 @@ package rivercross;
 import javax.imageio.ImageIO;
 
 import javafx.scene.image.Image;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 
 public class Side {
-
+    
+    List<ICrosser> leftRaft = new ArrayList<>();
+    List<ICrosser> rightRaft = new ArrayList<>();
     private int xPos;
     private int YPos;
 

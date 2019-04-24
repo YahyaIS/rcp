@@ -41,15 +41,16 @@ public class Wolf implements ICrosser{
         this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
     }
     
-public void move(MouseEvent e,Raft raft) {
+public void move(MouseEvent e,Raft raft,Side left, Side right) {
     
         if (rec.contains(e.getX(), e.getY())) {
-            if (place == 0&&raft.getPassengers() < 2) {
+            if (place == 0&&raft.getPassengers() < 2&&raft.getPlace()==0) {
                 posX += 170;
                 posY -= 15;
                 setRec(rec);
                 place++;
                 raft.addList(this);
+                left.leftRaft.remove(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
@@ -58,6 +59,7 @@ public void move(MouseEvent e,Raft raft) {
                 setRec(rec);
                 place--;
                 raft.removeList(this);
+                left.leftRaft.add(this);
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==2)
@@ -67,15 +69,17 @@ public void move(MouseEvent e,Raft raft) {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
+                right.rightRaft.add(this);
                 raft.setPassengers(raft.getPassengers()-1);
             }
-            else if(place==3)
+            else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
             {
                 posX-=170;
                 posY-=15;
                 setRec(rec);
                 place--;
                 raft.addList(this);
+                right.rightRaft.remove(this);
                 raft.setPassengers(raft.getPassengers()+1);
             }
             

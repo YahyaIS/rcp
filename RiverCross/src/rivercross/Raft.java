@@ -19,16 +19,16 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 public class Raft {
-
-    private List<ICrosser> passengerList = new ArrayList<>();
+    List<ICrosser> passengerList = new ArrayList<>();
     private int place;
     private Rectangle2D rec;
     private Rectangle2D moveRec;
     private int passengers = 0;
+    private int weightsum=0;
     private int posX;
     private int posY;
+    
     BufferedImage bim = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
-
     BufferedImage bi = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
 
     public Raft() {
@@ -79,6 +79,7 @@ public class Raft {
             ICrosser crosser1 = passengerList.remove(0);
             crosser1.setPosX(posX + 60);
             crosser1.setRec(rec);
+          
             crosser1.setPlace(crosser1.getPlace() - 1);
             
             if (!passengerList.isEmpty()) {
@@ -96,7 +97,11 @@ public class Raft {
         }
 
     }
-
+    
+    
+    
+    
+    
     public void addList(ICrosser crosser) {
         passengerList.add(crosser);
     }
@@ -162,5 +167,15 @@ public class Raft {
     public void setMoveRec(Rectangle2D moveRec) {
         this.moveRec = moveRec;
     }
+
+    public int getWeightsum() {
+        return weightsum;
+    }
+
+    public void setWeightsum(int weightsum) {
+        this.weightsum = weightsum;
+    }
+    
+    
 
 }
