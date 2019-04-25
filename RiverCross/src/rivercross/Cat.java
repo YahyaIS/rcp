@@ -18,20 +18,21 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author yahya
+ * @author seif
  */
-public class Sheep implements ICrosser{
-    private int place=0;
+public class Cat implements ICrosser{
+
+   private int place=0;
     private Rectangle2D rec;
     private int posX;
     private int posY;
-    private final int weight=0;
+    private final int weight=20;
     private int eatingRank=2;
     BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
 
-    public Sheep(){
+    public Cat(){
         
-        File input=new File("sheep.png");
+        File input=new File("cat.png");
         try {
             bi= ImageIO.read(input);
         }
@@ -39,51 +40,51 @@ public class Sheep implements ICrosser{
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        posX=40;
-        posY=426;
+        posX=5;
+        posY=450;
         this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
     }
     
-public void move(MouseEvent e,Raft raft,Side left, Side right) {
+public void move(MouseEvent e,Raft raft) {
     
         if (rec.contains(e.getX(), e.getY())) {
             if (place == 0&&raft.getPassengers() < 2&&raft.getPlace()==0) {
-                posX += 230;
-                //posY -= 15;
+                posX += 255;
+                posY -= 5;
                 setRec(rec);
                 place++;
                 raft.addList(this);
-                left.leftRaft.remove(this);
                 raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
                 
             } else if (place == 1) {
-                posX -= 230;
-                //posY += 15;
+                posX -= 255;
+                posY += 5;
                 setRec(rec);
                 place--;
                 raft.removeList(this);
-                left.leftRaft.add(this);
                 raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
             }
             else if(place==2)
             {
-                posX+=230;
-                //posX+=15;
+                posX += 255;
+                posY += 5;
                 setRec(rec);
                 place++;
                 raft.removeList(this);
-                right.rightRaft.add(this);
                 raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
             }
             else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
             {
-                posX-=230;
-               // posY-=15;
+                posX -= 255;
+                posY -= 5;
                 setRec(rec);
                 place--;
                 raft.addList(this);
-                right.rightRaft.remove(this);
                 raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
             }
 
         }

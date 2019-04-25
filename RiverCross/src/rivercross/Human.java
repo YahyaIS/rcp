@@ -18,12 +18,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
 
 public class Human implements ICrosser {
-    
+
     private int place = 0;
     private Rectangle2D rec;
     private int posX;
     private int posY;
-    private final int weight = 70;
+    private final int weight = 80;
     private int eatingRank = 0;
     BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
@@ -33,7 +33,7 @@ public class Human implements ICrosser {
         try {
             bi = ImageIO.read(input);
         } catch (IOException ex) {
-            Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         posX = 100;
@@ -41,44 +41,42 @@ public class Human implements ICrosser {
         this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
     }
 
-    public void move(MouseEvent e,Raft raft) {
-        
-        
-            
-            if (place == 0&&raft.getPassengers() < 2) {
-                posX += 150;
-                posY -= 15;
-                setRec(rec);
-                place++;
-                raft.addList(this);
-                raft.setPassengers(raft.getPassengers()+1);
-            } else if (place == 1) {
-                posX -= 150;
-                posY += 15;
-                setRec(rec);
-                place--;
-                raft.removeList(this);
-                raft.setPassengers(raft.getPassengers()-1);
-                
+    public void move(MouseEvent e, Raft raft, Side left, Side right) {
+
+        if (place == 0 && raft.getPassengers() < 2 && raft.getPlace() == 0) {
+            posX += 150;
+            posY -= 15;
+            setRec(rec);
+            place++;
+            raft.addList(this);
+            left.leftRaft.remove(this);
+            raft.setPassengers(raft.getPassengers() + 1);
+        } else if (place == 1) {
+            posX -= 150;
+            posY += 15;
+            setRec(rec);
+            place--;
+            raft.removeList(this);
+            left.leftRaft.add(this);
+            raft.setPassengers(raft.getPassengers() - 1);
+
+        } else if (place == 2) {
+            posX += 150;
+            posY += 15;
+            setRec(rec);
+            place++;
+            raft.removeList(this);
+            right.rightRaft.add(this);
+            raft.setPassengers(raft.getPassengers() - 1);
+        } else if (place == 3 && raft.getPassengers() < 2 && raft.getPlace() == 1) {
+            posX -= 150;
+            posY -= 15;
+            setRec(rec);
+            place--;
+            raft.addList(this);
+            right.rightRaft.remove(this);
+            raft.setPassengers(raft.getPassengers() + 1);
         }
-            else if(place==2)
-            {
-                posX+=150;
-                posY+=15;
-                setRec(rec);
-                place++;
-                raft.removeList(this);
-                raft.setPassengers(raft.getPassengers()-1);
-            }
-            else if(place==3)
-            {
-                posX-=150;
-                posY-=15;
-                setRec(rec);
-                place--;
-                raft.addList(this);
-                raft.setPassengers(raft.getPassengers()+1);
-            }
     }
 
     public javafx.scene.image.Image getImage() {
@@ -150,7 +148,6 @@ public class Human implements ICrosser {
     }
 
     public void setPlace(int place) {
-        
         this.place = place;
     }
 

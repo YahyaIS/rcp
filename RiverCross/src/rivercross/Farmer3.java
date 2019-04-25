@@ -18,127 +18,114 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author yahya
+ * @author seif
  */
-public class Sheep implements ICrosser{
-    private int place=0;
+public class Farmer3 implements ICrosser {
+
+    private int place = 0;
     private Rectangle2D rec;
     private int posX;
     private int posY;
-    private final int weight=0;
-    private int eatingRank=2;
-    BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
+    private final int weight = 90   ;
+    private int eatingRank = 0;
+    BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
-    public Sheep(){
-        
-        File input=new File("sheep.png");
+    public Farmer3() {
+
+        File input = new File("farmer3.png");
         try {
-            bi= ImageIO.read(input);
-        }
-        catch(IOException ex) {
+            bi = ImageIO.read(input);
+        } catch (IOException ex) {
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        posX=40;
-        posY=426;
-        this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+
+        posX = 140;
+        posY = 362;
+        this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
     }
-    
-public void move(MouseEvent e,Raft raft,Side left, Side right) {
-    
-        if (rec.contains(e.getX(), e.getY())) {
+
+    public void move(MouseEvent e,Raft raft) {
+        
+        
+            
             if (place == 0&&raft.getPassengers() < 2&&raft.getPlace()==0) {
-                posX += 230;
-                //posY -= 15;
+                posX += 150;
+                posY -= 15;
                 setRec(rec);
                 place++;
                 raft.addList(this);
-                left.leftRaft.remove(this);
                 raft.setPassengers(raft.getPassengers()+1);
-                
+                raft.setWeightsum(raft.getWeightsum()+weight);
             } else if (place == 1) {
-                posX -= 230;
-                //posY += 15;
+                posX -= 150;
+                posY += 15;
                 setRec(rec);
                 place--;
                 raft.removeList(this);
-                left.leftRaft.add(this);
                 raft.setPassengers(raft.getPassengers()-1);
-            }
+                raft.setWeightsum(raft.getWeightsum()-weight);
+                
+        }
             else if(place==2)
             {
-                posX+=230;
-                //posX+=15;
+                posX+=150;
+                posY+=15;
                 setRec(rec);
                 place++;
                 raft.removeList(this);
-                right.rightRaft.add(this);
                 raft.setPassengers(raft.getPassengers()-1);
+                raft.setWeightsum(raft.getWeightsum()-weight);
             }
             else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
             {
-                posX-=230;
-               // posY-=15;
+                posX-=150;
+                posY-=15;
                 setRec(rec);
                 place--;
                 raft.addList(this);
-                right.rightRaft.remove(this);
                 raft.setPassengers(raft.getPassengers()+1);
+                raft.setWeightsum(raft.getWeightsum()+weight);
             }
-
-        }
     }
-    
+
+    public javafx.scene.image.Image getImage() {
+        Image image = SwingFXUtils.toFXImage(this.bi, null);
+        return image;
+    }
+
     @Override
     public boolean canSail() {
-        return false;
+        return true;
     }
 
     @Override
     public double getWeight() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return weight;
     }
 
     @Override
     public int getEatingRank() {
-        return 1;
+        return eatingRank;
     }
 
     @Override
     public BufferedImage getImages() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public ICrosser makeCopy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public void setLabelToBeShown(String label) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
     public String getLabelToBeShown() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int getPlace() {
-        return place;
-    }
-
-    public void setPlace(int place) {
-        
-        this.place = place;
-    }
-
-    public Rectangle2D getRec() {
-        return rec;
-    }
-
-    public void setRec(Rectangle2D rec) {
-        this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+        return null;
     }
 
     public int getPosX() {
@@ -157,10 +144,21 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
         this.posY = posY;
     }
 
-    public javafx.scene.image.Image getImage(){
-        Image image = SwingFXUtils.toFXImage(this.bi, null);
-        return  image;
+    public void setRec(Rectangle2D rec) {
+        this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
     }
-    
-}
 
+    public Rectangle2D getRec() {
+        return rec;
+    }
+
+    public int getPlace() {
+        return place;
+    }
+
+    public void setPlace(int place) {
+        
+        this.place = place;
+    }
+
+}

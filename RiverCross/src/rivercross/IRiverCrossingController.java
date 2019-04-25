@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package rivercross;
 
 import java.util.List;
 
-/**
- *
- * @author seif
- */
 public interface IRiverCrossingController {
     
     public void newGame(ICrossingStrategy gameStrategy);
@@ -85,6 +77,7 @@ public interface IRiverCrossingController {
      * this function is bonus
      * it returns the boat riders starting from the beginning of the game
      * until the final solution to show the user the solution
+     * @return 
      */
     public List<List<ICrosser>> solveGame();
 }
