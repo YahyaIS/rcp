@@ -28,7 +28,7 @@ public class Human implements ICrosser {
     BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
     public Human() {
-
+        
         File input = new File("farmer.png");
         try {
             bi = ImageIO.read(input);
