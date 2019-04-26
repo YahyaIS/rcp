@@ -12,9 +12,7 @@ import java.util.Stack;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 
@@ -25,31 +23,29 @@ import javafx.scene.input.MouseEvent;
 public class StoryOne implements ICrossingStrategy {
 
     List<Water> waterpic = new ArrayList<>();
-
     private Side left = new Side(1);
     private Side right = new Side(2);
-
+    private Options options = new Options();
     private Raft raft = new Raft();
     private Human farmer = new Human();
     private Vegetables vegetables = new Vegetables();
     private Wolf wolf = new Wolf();
     private Sheep sheep = new Sheep();
     private boolean x = false;
-    private Group root = new Group();
     private Momento m = new Momento();
     private Momento momento;
     private Stack<Momento> undo = new Stack<>();
     private Stack<Momento> redo = new Stack<>();
-
+    private boolean h=true;
+    private Menu menu;
+    private int farmerX,farmerY,wolfX,wolfY,sheepX,sheepY,vegetablesX,vegetablesY,raftX,raftY;
+    private Rectangle2D farmerRec , wolfRec, sheepRec,vegetablesRec,raftRec;
     public void draw(Scene scene, GraphicsContext gc, BackGround bg) {
         getInitialCrossers();
         for (int i = 0; i < 7; i++) {
             Water w = new Water(i * 179, 480);
             waterpic.add(w);
         }
-
-        Canvas canvas = new Canvas(995, 560);
-        root.getChildren().add(canvas);
 
         new AnimationTimer() {
 
@@ -66,6 +62,8 @@ public class StoryOne implements ICrossingStrategy {
                 gc.drawImage(m.getUndoImage(), 100, 50);
                 gc.drawImage(m.getRedoImage(), 800, 50);
                 gc.drawImage(raft.getMoveImage(), 448, 50);
+                gc.drawImage(options.getImage(), options.getBackPosX(), options.getBackPosY());
+                gc.drawImage(options.getRestartImage(), options.getRestartPosX(), options.getRestartPosY());
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
                             if (raft.getMoveRec().contains(e.getX(), e.getY())) {
@@ -97,6 +95,14 @@ public class StoryOne implements ICrossingStrategy {
                                 undo.push(redo.pop());
                                 setAllRec();
                             }
+                            else if (options.getBackRec().contains(e.getX(), e.getY()))
+                            {
+                                menu.draw(scene, gc);
+                            }
+                            else if(options.getRestartRec().contains(e.getX(), e.getY()))
+                            {
+                                initPos();
+                            }
                         });
             }
 
@@ -104,6 +110,54 @@ public class StoryOne implements ICrossingStrategy {
 
     }
 
+    public void initPos()
+    {
+        if(h==true)
+        {
+            farmerX=farmer.getPosX();
+            farmerY=farmer.getPosY();
+            farmerRec=farmer.getRec();
+            wolfX=wolf.getPosX();
+            wolfY=wolf.getPosY();
+            wolfRec=wolf.getRec();
+            sheepX=sheep.getPosX();
+            sheepY=sheep.getPosY();
+            sheepRec=sheep.getRec();
+            vegetablesX=vegetables.getPosX();
+            vegetablesY=vegetables.getPosY();
+            vegetablesRec=vegetables.getRec();
+            raftX=raft.getPosX();
+            raftY=raft.getPosY();
+            raftRec=raft.getRec();
+            h=false;
+        }
+        farmer.setPosX(farmerX);
+        farmer.setPosY(farmerY);
+        farmer.setRec(farmerRec);
+        farmer.setPlace(0);
+        wolf.setPosX(wolfX);
+        wolf.setPosY(wolfY);
+        wolf.setRec(wolfRec);
+        wolf.setPlace(0);
+        sheep.setPosX(sheepX);
+        sheep.setPosY(sheepY);
+        sheep.setRec(sheepRec);
+        sheep.setPlace(0);
+        vegetables.setPosX(vegetablesX);
+        vegetables.setPosY(vegetablesY);
+        vegetables.setRec(vegetablesRec);
+        vegetables.setPlace(0);
+        raft.setPosX(raftX);
+        raft.setPosY(raftY);
+        raft.setRec(raftRec);
+        raft.setPlace(0);
+        raft.setPassengers(0);
+        raft.passengerList.clear();
+        left.leftRaft.clear();
+        getInitialCrossers();
+        right.rightRaft.clear();
+    }
+    
     public void setPositions(Stack<Momento> undo) {
         raft.setPosX(undo.peek().getRaftX());
         raft.setPosY(undo.peek().getRaftY());
@@ -207,6 +261,10 @@ public class StoryOne implements ICrossingStrategy {
         arr[14] = sheep.getPlace();
         arr[15] = 0;
         return arr;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
 }

@@ -12,15 +12,13 @@ import java.util.Stack;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 
 public class StoryTwo implements ICrossingStrategy {
-
-
+    private boolean h=true;
+    private Options options = new Options();
     private Side left = new Side(1);
     private Side right = new Side(2);
     private List<Water> waterpic = new ArrayList<>();
@@ -31,13 +29,14 @@ public class StoryTwo implements ICrossingStrategy {
     private Farmer4 farmer4 = new Farmer4();
     private Cat cat = new Cat();
     private Human human = new Human();
-    private Group root = new Group();
-    Momento m = new Momento();
-    Momento momento;
-    private boolean x=false;
-    Stack<Momento> undo = new Stack<>();
-    Stack<Momento> redo = new Stack<>();
-
+    private Momento m = new Momento();
+    private Momento momento;
+    private boolean x = false;
+    private Stack<Momento> undo = new Stack<>();
+    private Stack<Momento> redo = new Stack<>();
+    private Menu menu;
+    private int farmer1X,farmer1Y,farmer2X,farmer2Y,farmer3X,farmer3Y,farmer4X,farmer4Y,catX,catY,raftX,raftY;
+    private Rectangle2D farmer1R,farmer2R,farmer3R,farmer4R,catR,raftR;
     public void draw(Scene scene, GraphicsContext gc, BackGround bg) {
         getInitialCrossers();
         for (int i = 0; i < 7; i++) {
@@ -45,9 +44,6 @@ public class StoryTwo implements ICrossingStrategy {
             waterpic.add(w);
         }
 
-
-        Canvas canvas = new Canvas(995, 560);
-        root.getChildren().add(canvas);
         new AnimationTimer() {
 
             @Override
@@ -65,21 +61,23 @@ public class StoryTwo implements ICrossingStrategy {
                 gc.drawImage(m.getUndoImage(), 100, 50);
                 gc.drawImage(m.getRedoImage(), 800, 50);
                 gc.drawImage(raft.getMoveImage(), 448, 50);
+                gc.drawImage(options.getImage(), options.getBackPosX(), options.getBackPosY());
+                gc.drawImage(options.getRestartImage(), options.getRestartPosX(), options.getRestartPosY());
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
                             if (raft.getMoveRec().contains(e.getX(), e.getY())) {
                                 if (raft.getWeightsum() <= 100 && isValid(null, null, raft.passengerList)) {
-                                    if(x==false){
-                                        momento=new Momento(left.getLeftRaft(),right.getRightRaft(),raft.getPassengerList(),momentodata());
+                                    if (x == false) {
+                                        momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                         undo.add(momento);
-                                        x=true;
+                                        x = true;
                                     }
                                     raft.move(e);
-                                    momento=new Momento(left.getLeftRaft(),right.getRightRaft(),raft.getPassengerList(),momentodata());
+                                    momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                     undo.add(momento);
                                 }
                             } else if (farmer1.getRec().contains(e.getX(), e.getY())) {
-                                farmer1.move(e, raft,left,right);
+                                farmer1.move(e, raft, left, right);
                             } else if (farmer2.getRec().contains(e.getX(), e.getY())) {
                                 farmer2.move(e, raft);
                             } else if (farmer3.getRec().contains(e.getX(), e.getY())) {
@@ -89,24 +87,81 @@ public class StoryTwo implements ICrossingStrategy {
 
                             } else if (cat.getRec().contains(e.getX(), e.getY())) {
                                 cat.move(e, raft);
-                            }
-                            else if(m.getUndorec().contains(e.getX(),e.getY())&&!undo.isEmpty()&&undo.size()!=1){
+                            } else if (m.getUndorec().contains(e.getX(), e.getY()) && !undo.isEmpty() && undo.size() != 1) {
                                 redo.push(undo.pop());
                                 setPositions(undo);
                                 setAllRec();
-                            }
-                            else if(m.getRedorec().contains(e.getX(),e.getY())&&!redo.isEmpty()) {
+                            } else if (m.getRedorec().contains(e.getX(), e.getY()) && !redo.isEmpty()) {
                                 // if(redo.size()!=1){
                                 setPositions(redo);
                                 undo.push(redo.pop());
                                 setAllRec();
+                            } else if (options.getBackRec().contains(e.getX(), e.getY())) {
+                                menu.draw(scene, gc);
+                            } else if (options.getRestartRec().contains(e.getX(), e.getY())) {
+                                initPos();
                             }
 
-
-                            });
+                        });
             }
 
         }.start();
+    }
+    
+    public void initPos()
+    {
+        if(h==true)
+        {
+            farmer1X=farmer1.getPosX();
+            farmer1Y=farmer1.getPosY();
+            farmer1R=farmer1.getRec();
+            farmer2X=farmer2.getPosX();
+            farmer2Y=farmer2.getPosY();
+            farmer2R=farmer2.getRec();
+            farmer3X=farmer3.getPosX();
+            farmer3Y=farmer3.getPosY();
+            farmer3R=farmer3.getRec();
+            farmer4X=farmer4.getPosX();
+            farmer4Y=farmer4.getPosY();
+            farmer4R=farmer4.getRec();
+            catX=cat.getPosX();
+            catY=cat.getPosY();
+            catR=cat.getRec();
+            raftX=raft.getPosX();
+            raftY=raft.getPosY();
+            raftR=raft.getRec();
+            h=false;
+        }
+        farmer1.setPosX(farmer1X);
+        farmer1.setPosY(farmer1Y);
+        farmer1.setRec(farmer1R);
+        farmer1.setPlace(0);
+        farmer2.setPosX(farmer2X);
+        farmer2.setPosY(farmer2Y);
+        farmer2.setRec(farmer2R);
+        farmer2.setPlace(0);
+        farmer3.setPosX(farmer3X);
+        farmer3.setPosY(farmer3Y);
+        farmer3.setRec(farmer3R);
+        farmer3.setPlace(0);
+        farmer4.setPosX(farmer4X);
+        farmer4.setPosY(farmer4Y);
+        farmer4.setRec(farmer4R);
+        farmer4.setPlace(0);
+        cat.setPosX(catX);
+        cat.setPosY(catY);
+        cat.setRec(catR);
+        cat.setPlace(0);
+        raft.setPosX(raftX);
+        raft.setPosY(raftY);
+        raft.setRec(raftR);
+        raft.setPlace(0);
+        raft.setPassengers(0);
+        raft.setWeightsum(0);
+        raft.passengerList.clear();
+        left.leftRaft.clear();
+        getInitialCrossers();
+        right.rightRaft.clear();
     }
 
     @Override
@@ -156,8 +211,7 @@ public class StoryTwo implements ICrossingStrategy {
                 cat.bi.getHeight());
         cat.setRec(rec4);
     }
-    
-    
+
     public int[] momentodata() {
         int arr[] = new int[19];
         arr[0] = raft.getPosX();
@@ -175,7 +229,6 @@ public class StoryTwo implements ICrossingStrategy {
         arr[8] = farmer4.getPosX();
         arr[9] = farmer4.getPosY();
 
-
         arr[10] = raft.getPlace();
         arr[11] = farmer1.getPlace();
         arr[12] = farmer2.getPlace();
@@ -188,7 +241,6 @@ public class StoryTwo implements ICrossingStrategy {
         arr[18] = cat.getPlace();
         return arr;
     }
-
 
     public void setPositions(Stack<Momento> undo) {
         raft.setPosX(undo.peek().getRaftX());
@@ -214,8 +266,8 @@ public class StoryTwo implements ICrossingStrategy {
         cat.setPlace(undo.peek().getCatPlace());
     }
 
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
 }
-
-
-
-

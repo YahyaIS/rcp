@@ -45,7 +45,6 @@ public class Raft {
         } catch (IOException ex) {
             Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Image image = SwingFXUtils.toFXImage(bi, null);
         File input_file = new File("raft.png");
         try {
             bi = ImageIO.read(input_file);
