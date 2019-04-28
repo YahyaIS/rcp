@@ -25,19 +25,20 @@ public class Human implements ICrosser {
     private int posY;
     private final int weight = 80;
     private int eatingRank = 0;
+
     BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
 
     public Human() {
         
-        File input = new File("farmer.png");
+        File input = new File("farmer4.png");
         try {
             bi = ImageIO.read(input);
         } catch (IOException ex) {
             Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        posX = 100;
-        posY = 285;
+        posX = 120;
+        posY = 365;
         this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
     }
 
@@ -45,19 +46,19 @@ public class Human implements ICrosser {
 
         if (place == 0 && raft.getPassengers() < 2 && raft.getPlace() == 0) {
             posX += 150;
-            posY -= 15;
+            posY -= 20;
             setRec(rec);
             place++;
             raft.addList(this);
-            left.leftRaft.remove(this);
+            left.leftRaft.remove(this.getId());
             raft.setPassengers(raft.getPassengers() + 1);
         } else if (place == 1) {
             posX -= 150;
-            posY += 15;
+            posY += 20;
             setRec(rec);
             place--;
             raft.removeList(this);
-            left.leftRaft.add(this);
+            left.leftRaft.add(new Integer(this.getId()));
             raft.setPassengers(raft.getPassengers() - 1);
 
         } else if (place == 2) {
@@ -66,7 +67,7 @@ public class Human implements ICrosser {
             setRec(rec);
             place++;
             raft.removeList(this);
-            right.rightRaft.add(this);
+            right.rightRaft.add(new Integer(this.getId()));
             raft.setPassengers(raft.getPassengers() - 1);
         } else if (place == 3 && raft.getPassengers() < 2 && raft.getPlace() == 1) {
             posX -= 150;
@@ -74,7 +75,7 @@ public class Human implements ICrosser {
             setRec(rec);
             place--;
             raft.addList(this);
-            right.rightRaft.remove(this);
+            right.rightRaft.remove(new Integer(this.getId()));
             raft.setPassengers(raft.getPassengers() + 1);
         }
     }
@@ -151,4 +152,8 @@ public class Human implements ICrosser {
         this.place = place;
     }
 
+    @Override
+    public int getId() {
+        return 1;
+    }
 }

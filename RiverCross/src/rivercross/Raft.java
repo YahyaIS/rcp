@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +20,14 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 public class Raft {
-    public List<ICrosser> getPassengerList() {
-        return passengerList;
+    public List<Integer> getPassengerList() {
+    List<Integer>x=new ArrayList<>();
+        Iterator<ICrosser>it=passengerList.iterator();
+        while (it.hasNext()){
+            x.add(it.next().getId());
+        }
+        return x;
+
     }
 
     List<ICrosser> passengerList = new ArrayList<>();
@@ -74,9 +81,7 @@ public class Raft {
             passengerList.add(crosser1);
             setRec(rec);
             place++;
-            //return true;
 
-            //  passengers=0;
         } else if (place == 1 && passengers != 0) {
             
             posX -= 460;
@@ -97,8 +102,6 @@ public class Raft {
             passengerList.add(crosser1);
             setRec(rec);
             place--;
-            //return true;
-            //    passengers=0;
         }
 
     }

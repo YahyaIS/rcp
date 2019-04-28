@@ -65,5 +65,6 @@ public int getPosX();
     public int getPlace() ;
 
     public void setPlace(int place);
+    public int getId();
 
 }

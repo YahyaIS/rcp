@@ -50,7 +50,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place++;
                 raft.addList(this);
-                left.leftRaft.remove(this);
+                left.leftRaft.remove(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
@@ -59,7 +59,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place--;
                 raft.removeList(this);
-                left.leftRaft.add(this);
+                left.leftRaft.add(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==2)
@@ -69,7 +69,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
-                right.rightRaft.add(this);
+                right.rightRaft.add(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
@@ -79,7 +79,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place--;
                 raft.addList(this);
-                right.rightRaft.remove(this);
+                right.rightRaft.remove(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()+1);
             }
             
@@ -159,5 +159,9 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
         Image image = SwingFXUtils.toFXImage(this.bi, null);
         return  image;
     }
-    
+
+    @Override
+    public int getId() {
+        return 2;
+    }
 }
