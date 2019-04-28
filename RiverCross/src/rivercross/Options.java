@@ -16,15 +16,34 @@ public class Options {
     private int backPosX;
     private int backPosY;
     private Rectangle2D restartRec;
+    private Rectangle2D saveRec;
     private int restartPosX;
+    private int savePosX;
+    private int savePosY;
     private int restartPosY;
     BufferedImage bi = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bir = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    BufferedImage bs = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+
+    public Rectangle2D getSaveRec() {
+        return saveRec;
+    }
+
+    public int getSavePosX() {
+        return savePosX;
+    }
+
+    public int getSavePosY() {
+        return savePosY;
+    }
+
     public Options() {
         backPosX = 50;
         backPosY = 150;
         restartPosX=50;
         restartPosY=200;
+        savePosX=890;
+        savePosY=70;
         File input_file = new File("backButton.png");
         try {
             bi = ImageIO.read(input_file);
@@ -39,6 +58,20 @@ public class Options {
             Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.restartRec = new Rectangle2D(restartPosX, restartPosY, bir.getWidth(), bir.getHeight());
+
+        File input_file2 = new File("Save.png");
+        try {
+            bs = ImageIO.read(input_file2);
+        } catch (IOException ex) {
+            Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.saveRec = new Rectangle2D(savePosX, savePosY, bi.getWidth(), bi.getHeight());
+
+    }
+    public javafx.scene.image.Image getSaveImage() {
+        Image image = SwingFXUtils.toFXImage(this.bs, null);
+        return image;
+
     }
     public javafx.scene.image.Image getImage() {
         Image image = SwingFXUtils.toFXImage(this.bi, null);

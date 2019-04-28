@@ -26,66 +26,128 @@ public class Farmer1 implements ICrosser {
     private Rectangle2D rec;
     private int posX;
     private int posY;
-    private final int weight = 40;
+    private  int weight;
     private int eatingRank = 0;
-    BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
+    private int x;
+    private int deltaX,deltaY;
+    private int id;
 
-    public Farmer1() {
-
-        File input = new File("farmer1.png");
-        try {
-            bi = ImageIO.read(input);
-        } catch (IOException ex) {
-            Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        posX = 30;
-        posY = 420;
-        this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
+    public int getId() {
+        return id;
     }
 
-    public void move(MouseEvent e,Raft raft,Side left,Side right) {
+    BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
+
+    public Farmer1(int x) {
+        this.x=x;
+        if(x==1) {
+            File input = new File("farmer1.png");
+            try {
+                bi = ImageIO.read(input);
+            } catch (IOException ex) {
+                Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            posX = 30;
+            posY = 420;
+            this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
+            weight=40;
+            deltaX=150;
+            deltaY=15;
+            id=1;
+        }
+        else if(x==4){
+            File input = new File("farmer4.png");
+            try {
+                bi = ImageIO.read(input);
+            } catch (IOException ex) {
+                Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            posX = 87;
+            posY = 365;
+            this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
+            weight=80;
+            deltaX=150;
+            deltaY=17;
+            id=4;
+
+        }
+        else if(x==3){
+
+            File input = new File("farmer3.png");
+            try {
+                bi = ImageIO.read(input);
+            } catch (IOException ex) {
+                Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            posX = 140;
+            posY = 362;
+            this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
+            weight=90;
+            deltaX=150;
+            deltaY=15;
+            id=3;
+        }
+        else if(x==2) {
+            File input = new File("farmer2.png");
+            try {
+                bi = ImageIO.read(input);
+            } catch (IOException ex) {
+                Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            posX = 50;
+            posY = 373;
+            this.rec = new Rectangle2D(posX, posY, bi.getWidth(), bi.getHeight());
+            weight=60;
+            deltaX=160;
+            deltaY=5;
+            id=2;
+        }
+    }
+
+    public void move(MouseEvent e,Raft raft) {
         
             if (place == 0&&raft.getPassengers() < 2&&raft.getPlace()==0) {
-                posX += 250;
-                posY += 10;
+
+                posX += deltaX;
+                posY += deltaY;
                 setRec(rec);
                 place++;
                 raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 raft.setWeightsum(raft.getWeightsum()+weight);
-                left.leftRaft.remove(this);
             } else if (place == 1) {
-                posX -= 250;
-                posY -= 10;
+                posX -= deltaX;
+                posY -= deltaY;
                 setRec(rec);
                 place--;
                 raft.removeList(this);
                 raft.setPassengers(raft.getPassengers()-1);
                 raft.setWeightsum(raft.getWeightsum()-weight);
-                left.leftRaft.add(this);
         }
             else if(place==2)
             {
-                posX+=150;
-                posY-=15;
+                posX+=deltaX;
+                posY-=deltaY;
                 setRec(rec);
                 place++;
                 raft.removeList(this);
                 raft.setPassengers(raft.getPassengers()-1);
                 raft.setWeightsum(raft.getWeightsum()-weight);
-                right.rightRaft.add(this);
+
             }
             else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
             {
-                posX-=150;
-                posY+=15;
+                posX-=deltaX;
+                posY+=deltaY;
                 setRec(rec);
                 place--;
                 raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 raft.setWeightsum(raft.getWeightsum()+weight);
-                right.rightRaft.remove(this);
             }
             
     }
