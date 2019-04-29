@@ -30,6 +30,11 @@ public class Cat implements ICrosser{
     private int eatingRank=2;
     BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
 
+    @Override
+    public int getId() {
+        return 5;
+    }
+
     public Cat(){
         
         File input=new File("cat.png");

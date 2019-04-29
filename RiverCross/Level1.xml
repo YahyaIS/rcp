@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<momento>
+    <catPlace>0</catPlace>
+    <catX>0</catX>
+    <catY>0</catY>
+    <char1X>835</char1X>
+    <char1Y>360</char1Y>
+    <char2X>930</char2X>
+    <char2Y>435</char2Y>
+    <char3X>870</char3X>
+    <char3Y>400</char3Y>
+    <char4X>930</char4X>
+    <char4Y>426</char4Y>
+    <left>-1</left>
+    <passengerList>-1</passengerList>
+    <passengers>0</passengers>
+    <place1>3</place1>
+    <place2>3</place2>
+    <place3>3</place3>
+    <place4>3</place4>
+    <raftX>640</raftX>
+    <raftY>400</raftY>
+    <raftplace>1</raftplace>
+    <right>4</right>
+    <right>2</right>
+    <right>1</right>
+    <right>3</right>
+</momento>

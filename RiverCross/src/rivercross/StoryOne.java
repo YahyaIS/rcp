@@ -6,6 +6,7 @@
 package rivercross;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -36,12 +37,12 @@ public class StoryOne implements ICrossingStrategy {
     private Momento momento;
     private Stack<Momento> undo = new Stack<>();
     private Stack<Momento> redo = new Stack<>();
-    private boolean h=true;
+    private boolean h = true;
     private Menu menu;
-    private int farmerX,farmerY,wolfX,wolfY,sheepX,sheepY,vegetablesX,vegetablesY,raftX,raftY;
-    private Rectangle2D farmerRec , wolfRec, sheepRec,vegetablesRec,raftRec;
+    private int farmerX, farmerY, wolfX, wolfY, sheepX, sheepY, vegetablesX, vegetablesY, raftX, raftY;
+    private Rectangle2D farmerRec, wolfRec, sheepRec, vegetablesRec, raftRec;
+
     public void draw(Scene scene, GraphicsContext gc, BackGround bg) {
-        getInitialCrossers();
         for (int i = 0; i < 7; i++) {
             Water w = new Water(i * 179, 480);
             waterpic.add(w);
@@ -62,12 +63,14 @@ public class StoryOne implements ICrossingStrategy {
                 gc.drawImage(m.getUndoImage(), 100, 50);
                 gc.drawImage(m.getRedoImage(), 800, 50);
                 gc.drawImage(raft.getMoveImage(), 448, 50);
+                gc.drawImage(options.getSaveImage(), options.getSavePosX(), options.getSavePosY());
                 gc.drawImage(options.getImage(), options.getBackPosX(), options.getBackPosY());
                 gc.drawImage(options.getRestartImage(), options.getRestartPosX(), options.getRestartPosY());
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
+
                             if (raft.getMoveRec().contains(e.getX(), e.getY())) {
-                                if (isValid(right.rightRaft, left.leftRaft, raft.passengerList)) {
+                                if (isValid(getList(right.rightRaft), getList(left.leftRaft), raft.passengerList)) {
                                     if (x == false) {
                                         momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                         undo.add(momento);
@@ -88,20 +91,24 @@ public class StoryOne implements ICrossingStrategy {
 
                             } else if (m.getUndorec().contains(e.getX(), e.getY()) && !undo.isEmpty() && undo.size() != 1) {
                                 redo.push(undo.pop());
-                                setPositions(undo);
+                                setPositions(undo.peek());
                                 setAllRec();
                             } else if (m.getRedorec().contains(e.getX(), e.getY()) && !redo.isEmpty()) {
-                                setPositions(redo);
+                                setPositions(redo.peek());
                                 undo.push(redo.pop());
                                 setAllRec();
-                            }
-                            else if (options.getBackRec().contains(e.getX(), e.getY()))
-                            {
-                                menu.draw(scene, gc);
-                            }
-                            else if(options.getRestartRec().contains(e.getX(), e.getY()))
-                            {
+                            } else if (options.getBackRec().contains(e.getX(), e.getY())) {
                                 initPos();
+                                menu.draw(scene, gc);
+                            } else if (options.getRestartRec().contains(e.getX(), e.getY())) {
+                                initPos();
+                            } else if (options.getSaveRec().contains(e.getX(), e.getY())) {
+                                Xml x = new Xml("Level1.xml");
+                                try {
+                                    x.createXml(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
                             }
                         });
             }
@@ -110,26 +117,24 @@ public class StoryOne implements ICrossingStrategy {
 
     }
 
-    public void initPos()
-    {
-        if(h==true)
-        {
-            farmerX=farmer.getPosX();
-            farmerY=farmer.getPosY();
-            farmerRec=farmer.getRec();
-            wolfX=wolf.getPosX();
-            wolfY=wolf.getPosY();
-            wolfRec=wolf.getRec();
-            sheepX=sheep.getPosX();
-            sheepY=sheep.getPosY();
-            sheepRec=sheep.getRec();
-            vegetablesX=vegetables.getPosX();
-            vegetablesY=vegetables.getPosY();
-            vegetablesRec=vegetables.getRec();
-            raftX=raft.getPosX();
-            raftY=raft.getPosY();
-            raftRec=raft.getRec();
-            h=false;
+    public void initPos() {
+        if (h == true) {
+            farmerX = farmer.getPosX();
+            farmerY = farmer.getPosY();
+            farmerRec = farmer.getRec();
+            wolfX = wolf.getPosX();
+            wolfY = wolf.getPosY();
+            wolfRec = wolf.getRec();
+            sheepX = sheep.getPosX();
+            sheepY = sheep.getPosY();
+            sheepRec = sheep.getRec();
+            vegetablesX = vegetables.getPosX();
+            vegetablesY = vegetables.getPosY();
+            vegetablesRec = vegetables.getRec();
+            raftX = raft.getPosX();
+            raftY = raft.getPosY();
+            raftRec = raft.getRec();
+            h = false;
         }
         farmer.setPosX(farmerX);
         farmer.setPosY(farmerY);
@@ -156,33 +161,39 @@ public class StoryOne implements ICrossingStrategy {
         left.leftRaft.clear();
         getInitialCrossers();
         right.rightRaft.clear();
+        undo.clear();
+        undo.push(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
+        redo.clear();
     }
-    
-    public void setPositions(Stack<Momento> undo) {
-        raft.setPosX(undo.peek().getRaftX());
-        raft.setPosY(undo.peek().getRaftY());
-        farmer.setPosX(undo.peek().getChar1X());
-        farmer.setPosY(undo.peek().getChar1Y());
-        vegetables.setPosX(undo.peek().getChar2X());
-        vegetables.setPosY(undo.peek().getChar2Y());
-        wolf.setPosX(undo.peek().getChar3X());
-        wolf.setPosY(undo.peek().getChar3Y());
-        sheep.setPosX(undo.peek().getChar4X());
-        sheep.setPosY(undo.peek().getChar4Y());
-        left.setLeftRaft(undo.peek().getLeft());
-        right.setRightRaft(undo.peek().getRight());
-        raft.setPassengerList(undo.peek().getPassengerList());
-        raft.setPlace(undo.peek().getRaftplace());
-        farmer.setPlace(undo.peek().getPlace1());
-        vegetables.setPlace(undo.peek().getPlace2());
-        wolf.setPlace(undo.peek().getPlace3());
-        sheep.setPlace(undo.peek().getPlace4());
+
+    public void setPositions(Momento undo) {
+        raft.setPosX(undo.getRaftX());
+        raft.setPosY(undo.getRaftY());
+        farmer.setPosX(undo.getChar1X());
+        farmer.setPosY(undo.getChar1Y());
+        vegetables.setPosX(undo.getChar2X());
+        vegetables.setPosY(undo.getChar2Y());
+        wolf.setPosX(undo.getChar3X());
+        wolf.setPosY(undo.getChar3Y());
+        sheep.setPosX(undo.getChar4X());
+        sheep.setPosY(undo.getChar4Y());
+        left.setLeftRaft(undo.getLeft());
+        right.setRightRaft(undo.getRight());
+        raft.setPassengerList(getList(undo));
+        raft.setPlace(undo.getRaftplace());
+        farmer.setPlace(undo.getPlace1());
+
+        wolf.setPlace(undo.getPlace2());
+        sheep.setPlace(undo.getPlace3());
+        vegetables.setPlace(undo.getPlace4());
+        raft.setPassengers(undo.getPassengers());
     }
 
     @Override
     public boolean isValid(List<ICrosser> rightBankCrossers, List<ICrosser> leftBankCrossers, List<ICrosser> boatRiders) {
 
         if (!boatRiders.isEmpty()) {
+
             ICrosser crosser1 = boatRiders.remove(0);
 
             if ((leftBankCrossers.contains(wolf) && leftBankCrossers.contains(sheep))
@@ -212,7 +223,12 @@ public class StoryOne implements ICrossingStrategy {
         crossers.add(wolf);
         crossers.add(sheep);
         crossers.add(vegetables);
-        left.leftRaft = crossers;
+        List<Integer> x = new ArrayList<>();
+        x.add(1);
+        x.add(2);
+        x.add(3);
+        x.add(4);
+        left.leftRaft = x;
         return crossers;
     }
 
@@ -256,15 +272,64 @@ public class StoryOne implements ICrossingStrategy {
 
         arr[10] = raft.getPlace();
         arr[11] = farmer.getPlace();
-        arr[12] = vegetables.getPlace();
-        arr[13] = wolf.getPlace();
-        arr[14] = sheep.getPlace();
+
+        arr[12] = wolf.getPlace();
+        arr[13] = sheep.getPlace();
+        arr[14] = vegetables.getPlace();
         arr[15] = 0;
+        arr[16] = raft.getPassengers();
         return arr;
     }
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public List<ICrosser> getList(Momento m) {
+        List<ICrosser> crosser = new ArrayList<>();
+        if (!m.passengerList.contains(-1)) {
+            Iterator<Integer> irr = m.passengerList.iterator();
+            while (irr.hasNext()) {
+                int x = irr.next();
+                if (x == 1) {
+                    crosser.add(farmer);
+                } else if (x == 2) {
+                    crosser.add(wolf);
+                } else if (x == 3) {
+                    crosser.add(sheep);
+                } else if (x == 4) {
+                    crosser.add(vegetables);
+                }
+            }
+            return crosser;
+        } else {
+            m.passengerList.clear();
+            return crosser;
+        }
+
+    }
+
+    public List<ICrosser> getList(List<Integer> passengerList) {
+        List<ICrosser> crosser = new ArrayList<>();
+        if (!passengerList.contains(-1)) {
+            Iterator<Integer> irr = passengerList.iterator();
+            while (irr.hasNext()) {
+                int x = irr.next();
+                if (x == 1) {
+                    crosser.add(farmer);
+                } else if (x == 2) {
+                    crosser.add(wolf);
+                } else if (x == 3) {
+                    crosser.add(sheep);
+                } else if (x == 4) {
+                    crosser.add(vegetables);
+                }
+            }
+            return crosser;
+        } else {
+            passengerList.clear();
+            return crosser;
+        }
     }
 
 }

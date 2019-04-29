@@ -19,24 +19,24 @@ import javafx.embed.swing.SwingFXUtils;
 
 public class Side {
 
-    public void setLeftRaft(List<ICrosser> leftRaft) {
+    public void setLeftRaft(List<Integer> leftRaft) {
         this.leftRaft = leftRaft;
     }
 
-    public void setRightRaft(List<ICrosser> rightRaft) {
+    public void setRightRaft(List<Integer> rightRaft) {
         this.rightRaft = rightRaft;
     }
 
-    public List<ICrosser> getLeftRaft() {
+    public List<Integer> getLeftRaft() {
         return leftRaft;
     }
 
-    public List<ICrosser> getRightRaft() {
+    public List<Integer> getRightRaft() {
         return rightRaft;
     }
 
-    List<ICrosser> leftRaft = new ArrayList<>();
-    List<ICrosser> rightRaft = new ArrayList<>();
+    List<Integer> leftRaft = new ArrayList<>();
+    List<Integer> rightRaft = new ArrayList<>();
     private int xPos;
     private int YPos;
 
