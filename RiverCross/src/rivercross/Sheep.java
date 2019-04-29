@@ -53,7 +53,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place++;
                 raft.addList(this);
-                left.leftRaft.remove(this);
+                left.leftRaft.remove(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
@@ -62,7 +62,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place--;
                 raft.removeList(this);
-                left.leftRaft.add(this);
+                left.leftRaft.add(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==2)
@@ -72,7 +72,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place++;
                 raft.removeList(this);
-                right.rightRaft.add(this);
+                right.rightRaft.add(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()-1);
             }
             else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
@@ -82,7 +82,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 setRec(rec);
                 place--;
                 raft.addList(this);
-                right.rightRaft.remove(this);
+                right.rightRaft.remove(new Integer(this.getId()));
                 raft.setPassengers(raft.getPassengers()+1);
             }
 
@@ -123,6 +123,10 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
     public String getLabelToBeShown() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    @Override
+    public int getId(){
+        return 3;
+    }
 
     public int getPlace() {
         return place;
@@ -156,6 +160,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
     public void setPosY(int posY) {
         this.posY = posY;
     }
+
 
     public javafx.scene.image.Image getImage(){
         Image image = SwingFXUtils.toFXImage(this.bi, null);

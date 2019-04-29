@@ -9,21 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 
 public class Menu {
@@ -35,8 +26,17 @@ public class Menu {
     Image image1;
     BufferedImage bi2 = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
     Image image2;
+
+    BufferedImage Ng=new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
+    Image image3;
+
+    BufferedImage lG=new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
+    Image image4;
+
     private Rectangle2D rec1;
     private Rectangle2D rec2;
+    private Rectangle2D rec3;
+    private Rectangle2D rec4;
 
     public Menu() {
 
@@ -56,17 +56,32 @@ public class Menu {
         }
         this.rec2 = new Rectangle2D(500, 200, bi1.getWidth(), bi1.getHeight());
         image2 = SwingFXUtils.toFXImage(this.bi2, null);
+
+        File input3 = new File("NewGame.png");
+        try {
+            Ng = ImageIO.read(input3);
+        } catch (IOException ex) {
+            Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.rec3 = new Rectangle2D(350, 150, bi1.getWidth(), bi1.getHeight());
+        image3 = SwingFXUtils.toFXImage(this.Ng, null);
+
+
+        File input4 = new File("LoadGame.png");
+        try {
+            lG = ImageIO.read(input4);
+        } catch (IOException ex) {
+            Logger.getLogger(Side.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.rec4 = new Rectangle2D(350, 350, bi1.getWidth(), bi1.getHeight());
+        image4 = SwingFXUtils.toFXImage(this.lG, null);
+
+
+
+
     }
 
     public void draw(Scene theScene, GraphicsContext gc) {
-        
-//        for (int i = 0; i < 7; i++) {
-//            Water w = new Water(i * 179, 480);
-//            waterpic.add(w);
-//        }
-//
-//        Side left = new Side(1);
-//        Side right = new Side(2);
         
         storyOne.setMenu(this);
         storyTwo.setMenu(this);
@@ -76,23 +91,57 @@ public class Menu {
             public void handle(long l) {
 
                 bg.drawBackground(gc, waterpic);
-//                gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
-//                gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(image1, 300, 200);
                 gc.drawImage(image2, 500, 200);
                 theScene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
                     if (rec1.contains(e.getX(), e.getY())) {
-                        storyOne.initPos();
-                        storyOne.draw(theScene, gc, bg);
-                        
+                       choose(theScene,gc,1);
                     } else if (rec2.contains(e.getX(), e.getY())) {
-                        storyTwo.initPos();
-                        storyTwo.draw(theScene, gc, bg);
+                        choose(theScene,gc,2);
                     }
                 });
             }
         }.start();
 
+    }
+
+    public void choose(Scene theScene,GraphicsContext gc,int level){
+        new AnimationTimer() {
+        @Override
+        public void handle(long l) {
+            bg.drawBackground(gc,waterpic);
+            gc.drawImage(image3,350,150);
+            gc.drawImage(image4,350,350);
+            theScene.setOnMouseClicked(
+                    (EventHandler<MouseEvent>) e -> {
+                        if (rec3.contains(e.getX(), e.getY())) {
+                            if(level==1) {
+                                storyOne.initPos();
+                                storyOne.draw(theScene, gc, bg);
+                            }
+                            else
+                            {
+                                storyTwo.initPos();
+                                storyTwo.draw(theScene, gc, bg);
+                            }
+                        } else if (rec4.contains(e.getX(), e.getY())) {
+                            if(level==1){
+                                Xml x=new Xml("Level1.xml");
+                                storyOne.setPositions(x.ReadXml());
+                                storyOne.setAllRec();
+                                storyOne.draw(theScene, gc, bg);
+                            }
+                            else
+                            {
+                                Xml x=new Xml("Level2.xml");
+                               storyTwo.setPositions( x.ReadXml());
+                               storyTwo.setAllRec();
+                               storyTwo.draw(theScene,gc,bg);
+                            }
+                        }
+                    });
+        }
+        }.start();
     }
 }

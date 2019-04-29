@@ -8,15 +8,13 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 public class Main extends Application {
 
     List<Water> waterpic = new ArrayList<>();
     BackGround bg = new BackGround();
     Menu menu=new Menu();
-    Xml xml=new Xml();
+  //  Xml x//ml=new Xml();
     @Override
     public void start(Stage theStage) throws Exception {
         theStage.setTitle("River crosing puzzle");
@@ -28,8 +26,6 @@ public class Main extends Application {
         root.getChildren().add(canvas);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         menu.draw(theScene, gc);
-//        xml.createXml();
-//        xml.ReadXml();
         theStage.show();
     }
 
