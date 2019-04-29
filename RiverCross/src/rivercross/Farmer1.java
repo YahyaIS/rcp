@@ -108,7 +108,7 @@ public class Farmer1 implements ICrosser {
         }
     }
 
-    public void move(MouseEvent e,Raft raft) {
+    public void move(MouseEvent e,Raft raft,Side left) {
         
             if (place == 0&&raft.getPassengers() < 2&&raft.getPlace()==0) {
 
@@ -116,6 +116,7 @@ public class Farmer1 implements ICrosser {
                 posY += deltaY;
                 setRec(rec);
                 place++;
+                left.leftRaft.remove(new Integer(this.getId()));
                 raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 raft.setWeightsum(raft.getWeightsum()+weight);
@@ -124,6 +125,7 @@ public class Farmer1 implements ICrosser {
                 posY -= deltaY;
                 setRec(rec);
                 place--;
+                left.leftRaft.add(this.getId());
                 raft.removeList(this);
                 raft.setPassengers(raft.getPassengers()-1);
                 raft.setWeightsum(raft.getWeightsum()-weight);
@@ -156,7 +158,10 @@ public class Farmer1 implements ICrosser {
         Image image = SwingFXUtils.toFXImage(this.bi, null);
         return image;
     }
-
+public void removeRec()
+    {
+        this.rec = new Rectangle2D(1000, 1000, bi.getWidth(), bi.getHeight());
+    }
     @Override
     public boolean canSail() {
         return true;

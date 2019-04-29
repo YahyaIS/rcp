@@ -128,6 +128,7 @@ public class Menu {
                         } else if (rec4.contains(e.getX(), e.getY())) {
                             if(level==1){
                                 Xml x=new Xml("Level1.xml");
+                                storyOne.initPos();
                                 storyOne.setPositions(x.ReadXml());
                                 storyOne.setAllRec();
                                 storyOne.draw(theScene, gc, bg);
@@ -135,6 +136,7 @@ public class Menu {
                             else
                             {
                                 Xml x=new Xml("Level2.xml");
+                                storyTwo.initPos();
                                storyTwo.setPositions( x.ReadXml());
                                storyTwo.setAllRec();
                                storyTwo.draw(theScene,gc,bg);

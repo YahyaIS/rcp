@@ -29,7 +29,7 @@ public class Raft {
         return x;
 
     }
-
+    private int moves=0;
     List<ICrosser> passengerList = new ArrayList<>();
     private int place;
     private Rectangle2D rec;
@@ -80,7 +80,7 @@ public class Raft {
             passengerList.add(crosser1);
             setRec(rec);
             place++;
-
+            moves++;
         } else if (place == 1 && passengers != 0) {
             
             posX -= 460;
@@ -101,6 +101,7 @@ public class Raft {
             passengerList.add(crosser1);
             setRec(rec);
             place--;
+            moves++;
         }
 
     }
@@ -182,6 +183,14 @@ public class Raft {
 
     public void setWeightsum(int weightsum) {
         this.weightsum = weightsum;
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
     }
     
     

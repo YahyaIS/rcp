@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <momento>
-    <catPlace>0</catPlace>
-    <catX>5</catX>
-    <catY>450</catY>
+    <catPlace>1</catPlace>
+    <catX>260</catX>
+    <catY>445</catY>
     <char1X>30</char1X>
     <char1Y>420</char1Y>
     <char2X>50</char2X>
     <char2Y>373</char2Y>
-    <char3X>290</char3X>
-    <char3Y>377</char3Y>
-    <char4X>87</char4X>
-    <char4Y>365</char4Y>
-    <left>-1</left>
-    <passengerList>3</passengerList>
-    <passengers>1</passengers>
+    <char3X>140</char3X>
+    <char3Y>362</char3Y>
+    <char4X>237</char4X>
+    <char4Y>382</char4Y>
+    <left>1</left>
+    <left>2</left>
+    <left>3</left>
+    <moves>0</moves>
+    <passengerList>5</passengerList>
+    <passengerList>4</passengerList>
+    <passengers>2</passengers>
     <place1>0</place1>
     <place2>0</place2>
-    <place3>1</place3>
-    <place4>0</place4>
+    <place3>0</place3>
+    <place4>1</place4>
     <raftX>180</raftX>
     <raftY>400</raftY>
     <raftplace>0</raftplace>

@@ -161,7 +161,10 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
         this.posY = posY;
     }
 
-
+public void removeRec()
+    {
+        this.rec = new Rectangle2D(1000, 1000, bi.getWidth(), bi.getHeight());
+    }
     public javafx.scene.image.Image getImage(){
         Image image = SwingFXUtils.toFXImage(this.bi, null);
         return  image;

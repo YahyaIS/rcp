@@ -1,4 +1,3 @@
-
 package rivercross;
 
 import java.awt.image.BufferedImage;
@@ -12,6 +11,7 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 public class Options {
+
     private Rectangle2D backRec;
     private int backPosX;
     private int backPosY;
@@ -24,6 +24,7 @@ public class Options {
     BufferedImage bi = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bir = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bs = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    BufferedImage bw = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
 
     public Rectangle2D getSaveRec() {
         return saveRec;
@@ -40,10 +41,10 @@ public class Options {
     public Options() {
         backPosX = 50;
         backPosY = 150;
-        restartPosX=50;
-        restartPosY=200;
-        savePosX=890;
-        savePosY=70;
+        restartPosX = 50;
+        restartPosY = 200;
+        savePosX = 890;
+        savePosY = 70;
         File input_file = new File("backButton.png");
         try {
             bi = ImageIO.read(input_file);
@@ -65,25 +66,52 @@ public class Options {
         } catch (IOException ex) {
             Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.saveRec = new Rectangle2D(savePosX, savePosY, bi.getWidth(), bi.getHeight());
+        this.saveRec = new Rectangle2D(savePosX, savePosY, bs.getWidth(), bs.getHeight());
+        File input_file3 = new File("win.jpg");
+        try {
+            bw = ImageIO.read(input_file3);
+        } catch (IOException ex) {
+            Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
+
+    public void removeRec() {
+        this.backRec = new Rectangle2D(400, 250, bi.getWidth(), bi.getHeight());
+        this.restartRec = new Rectangle2D(550, 250, bir.getWidth(), bir.getHeight());
+    }
+
+    public void setRec() {
+        this.backRec = new Rectangle2D(backPosX,backPosY,bi.getWidth(),bi.getHeight());
+        this.restartRec = new Rectangle2D(restartPosX,restartPosY,bir.getWidth(),bir.getHeight());
     }
     public javafx.scene.image.Image getSaveImage() {
         Image image = SwingFXUtils.toFXImage(this.bs, null);
         return image;
 
     }
+
     public javafx.scene.image.Image getImage() {
         Image image = SwingFXUtils.toFXImage(this.bi, null);
         return image;
-    
+
     }
+
     public javafx.scene.image.Image getRestartImage() {
         Image image = SwingFXUtils.toFXImage(this.bir, null);
         return image;
-    
+
     }
- public int getBackPosX() {
+
+    public javafx.scene.image.Image getWinImage() {
+        Image image = SwingFXUtils.toFXImage(this.bw, null);
+        return image;
+
+    }
+    
+    
+    
+    public int getBackPosX() {
         return backPosX;
     }
 

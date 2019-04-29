@@ -25,7 +25,6 @@ public class Momento {
     private int char1X;
     private int char1Y;
 
-
     private int char2X;
     private int char2Y;
 
@@ -35,6 +34,7 @@ public class Momento {
     private int char4X;
     private int char4Y;
     private int passengers;
+    private int moves;
     private int raftplace;
     private int place1;
     private int place2;
@@ -44,7 +44,6 @@ public class Momento {
     private int catY;
     private int catPlace;
 
-
     public Rectangle2D getUndorec() {
         return undorec;
     }
@@ -53,17 +52,35 @@ public class Momento {
         return redorec;
     }
 
-    private   BufferedImage undoImage = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
-    private   BufferedImage redoImage = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
-    private   Rectangle2D undorec;
-    private   Rectangle2D redorec;
-    private  List<Integer> left;
-    private  List<Integer> right;
+    private BufferedImage undoImage = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage redoImage = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    private Rectangle2D undorec;
+    private Rectangle2D redorec;
+    private List<Integer> left;
+    private List<Integer> right;
 
-    public Momento(){
+    public Momento() {
         this.undorec = new Rectangle2D(100, 50, undoImage.getWidth(), undoImage.getHeight());
         this.redorec = new Rectangle2D(800, 50, redoImage.getWidth(), redoImage.getHeight());
 
+    }
+
+    public void removeRec() {
+        this.undorec = new Rectangle2D(1000, 1000, undoImage.getWidth(), undoImage.getHeight());
+        this.redorec = new Rectangle2D(1000, 1000, redoImage.getWidth(), redoImage.getHeight());
+    }
+
+    public void setRec() {
+        this.undorec = new Rectangle2D(100, 50, undoImage.getWidth(), undoImage.getHeight());
+        this.redorec = new Rectangle2D(800, 50, redoImage.getWidth(), redoImage.getHeight());
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
     }
 
     public List<Integer> getLeft() {
@@ -97,7 +114,6 @@ public class Momento {
     public int getPlace4() {
         return place4;
     }
-
 
     public int getCatX() {
         return catX;
@@ -155,50 +171,60 @@ public class Momento {
         return passengers;
     }
 
-    public Momento(List<Integer> left, List<Integer> right, List<Integer> passengerList , int ... numbers){
-        if(this.right!=null)
+    public Momento(List<Integer> left, List<Integer> right, List<Integer> passengerList, int... numbers) {
+        if (this.right != null) {
             this.right.clear();
-        if(this.left!=null)
+        }
+        if (this.left != null) {
             this.left.clear();
-        if(this.passengerList!=null)
+        }
+        if (this.passengerList != null) {
             this.passengerList.clear();
-    raftX=numbers[0];
-    raftY=numbers[1];
+        }
+        raftX = numbers[0];
+        raftY = numbers[1];
 
-    char1X=numbers[2];
-    char1Y=numbers[3];
+        char1X = numbers[2];
+        char1Y = numbers[3];
 
-    char2X=numbers[4];
-    char2Y=numbers[5];
+        char2X = numbers[4];
+        char2Y = numbers[5];
 
-    char3X=numbers[6];
-    char3Y=numbers[7];
+        char3X = numbers[6];
+        char3Y = numbers[7];
 
-    char4X=numbers[8];
-    char4Y=numbers[9];
-    raftplace=numbers[10];
+        char4X = numbers[8];
+        char4Y = numbers[9];
+        raftplace = numbers[10];
 
-    place1=numbers[11];
-    place2=numbers[12];
-    place3=numbers[13];
-    place4=numbers[14];
-    passengers=numbers[16];
-    if(numbers[15]==1){
-        catX=numbers[17];
-        catY=numbers[18];
-        catPlace=numbers[19];
-    }
-    List<Integer> temp=new ArrayList<>();
-    temp.add(-1);
-    if(!left.isEmpty())
-    this.left=left;
-    else this.left=temp;
-    if(!right.isEmpty())
-    this.right=right;
-    else this.right=temp;
-    if(!passengerList.isEmpty())
-    this.passengerList=passengerList;
-    else this.passengerList=temp;
+        place1 = numbers[11];
+        place2 = numbers[12];
+        place3 = numbers[13];
+        place4 = numbers[14];
+        passengers = numbers[16];
+        moves = numbers[17];
+        if (numbers[15] == 1) {
+            catX = numbers[18];
+            catY = numbers[19];
+            catPlace = numbers[20];
+        }
+        List<Integer> temp = new ArrayList<>();
+        temp.add(-1);
+        if (!left.isEmpty()) {
+            this.left = left;
+        } else {
+            this.left = temp;
+        }
+        if (!right.isEmpty()) {
+            this.right = right;
+        } else {
+            this.right = temp;
+        }
+        if (!passengerList.isEmpty()) {
+            this.passengerList = passengerList;
+        } else {
+            this.passengerList = temp;
+        }
     }
 
     public javafx.scene.image.Image getUndoImage() {
@@ -221,102 +247,127 @@ public class Momento {
         }
         return SwingFXUtils.toFXImage(this.redoImage, null);
     }
+
     @XmlElement
     public void setPassengerList(List<Integer> passengerList) {
         this.passengerList = passengerList;
     }
+
     @XmlElement
     public void setRaftX(int raftX) {
         this.raftX = raftX;
     }
+
     @XmlElement
     public void setRaftY(int raftY) {
         this.raftY = raftY;
     }
+
     @XmlElement
     public void setChar1X(int char1X) {
         this.char1X = char1X;
     }
+
     @XmlElement
     public void setChar1Y(int char1Y) {
         this.char1Y = char1Y;
     }
+
     @XmlElement
     public void setChar2X(int char2X) {
         this.char2X = char2X;
     }
+
     @XmlElement
     public void setChar2Y(int char2Y) {
         this.char2Y = char2Y;
     }
+
     @XmlElement
     public void setChar3X(int char3X) {
         this.char3X = char3X;
     }
+
     @XmlElement
     public void setChar3Y(int char3Y) {
         this.char3Y = char3Y;
     }
+
     @XmlElement
     public void setChar4X(int char4X) {
         this.char4X = char4X;
     }
+
     @XmlElement
     public void setChar4Y(int char4Y) {
         this.char4Y = char4Y;
     }
+
     @XmlElement
     public void setRaftplace(int raftplace) {
         this.raftplace = raftplace;
     }
+
     @XmlElement
     public void setPlace1(int place1) {
         this.place1 = place1;
     }
+
     @XmlElement
     public void setPlace2(int place2) {
         this.place2 = place2;
     }
+
     @XmlElement
     public void setPlace3(int place3) {
         this.place3 = place3;
     }
+
     @XmlElement
     public void setPlace4(int place4) {
         this.place4 = place4;
     }
+
     @XmlElement
     public void setCatX(int catX) {
         this.catX = catX;
     }
+
     @XmlElement
     public void setCatY(int catY) {
         this.catY = catY;
     }
+
     @XmlElement
     public void setCatPlace(int catPlace) {
         this.catPlace = catPlace;
     }
+
     @XmlElement
     public void setUndoImage(BufferedImage undoImage) {
         this.undoImage = undoImage;
     }
+
     @XmlElement
     public void setRedoImage(BufferedImage redoImage) {
         this.redoImage = redoImage;
     }
+
     @XmlElement
     public void setUndorec(Rectangle2D undorec) {
         this.undorec = undorec;
     }
+
     @XmlElement
     public void setRedorec(Rectangle2D redorec) {
         this.redorec = redorec;
     }
+
     @XmlElement
     public void setLeft(List<Integer> left) {
         this.left = left;
     }
+
     @XmlElement
     public void setRight(List<Integer> right) {
         this.right = right;
@@ -325,5 +376,5 @@ public class Momento {
     public void setPassengers(int passengers) {
         this.passengers = passengers;
     }
-    
+
 }
