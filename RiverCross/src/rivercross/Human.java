@@ -156,4 +156,8 @@ public class Human implements ICrosser {
     public int getId() {
         return 1;
     }
+    public void removeRec()
+    {
+        this.rec = new Rectangle2D(1000, 1000, bi.getWidth(), bi.getHeight());
+    }
 }

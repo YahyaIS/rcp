@@ -13,9 +13,13 @@ import java.util.Stack;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -66,6 +70,27 @@ public class StoryOne implements ICrossingStrategy {
                 gc.drawImage(options.getSaveImage(), options.getSavePosX(), options.getSavePosY());
                 gc.drawImage(options.getImage(), options.getBackPosX(), options.getBackPosY());
                 gc.drawImage(options.getRestartImage(), options.getRestartPosX(), options.getRestartPosY());
+                gc.setTextAlign(TextAlignment.CENTER);
+                gc.setTextBaseline(VPos.CENTER);
+                gc.setFill(Color.BLACK);
+                gc.setFont(Font.font(15));
+                gc.fillText("Moves : " + raft.getMoves(), 70, 270);
+                if (left.leftRaft.isEmpty() && raft.passengerList.isEmpty()) {
+                    farmer.removeRec();
+                    wolf.removeRec();
+                    sheep.removeRec();
+                    vegetables.removeRec();
+                    m.removeRec();
+                    options.removeRec();
+                    gc.drawImage(options.getWinImage(), 300, 100);
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.ANTIQUEWHITE);
+                    gc.setFont(Font.font(30));
+                    gc.fillText("Level Complete ! " , 500, 150);
+                    gc.drawImage(options.getImage(),400 , 250);
+                    gc.drawImage(options.getRestartImage(), 550, 250);
+                }
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
 
@@ -90,10 +115,14 @@ public class StoryOne implements ICrossingStrategy {
                                 vegetables.move(e, raft, left, right);
 
                             } else if (m.getUndorec().contains(e.getX(), e.getY()) && !undo.isEmpty() && undo.size() != 1) {
+                                if (raft.getMoves() > 0) {
+                                    raft.setMoves(raft.getMoves() - 1);
+                                }
                                 redo.push(undo.pop());
                                 setPositions(undo.peek());
                                 setAllRec();
                             } else if (m.getRedorec().contains(e.getX(), e.getY()) && !redo.isEmpty()) {
+                                raft.setMoves(raft.getMoves() + 1);
                                 setPositions(redo.peek());
                                 undo.push(redo.pop());
                                 setAllRec();
@@ -136,6 +165,9 @@ public class StoryOne implements ICrossingStrategy {
             raftRec = raft.getRec();
             h = false;
         }
+        m.setRec();
+        options.setRec();
+        raft.setMoves(0);
         farmer.setPosX(farmerX);
         farmer.setPosY(farmerY);
         farmer.setRec(farmerRec);
@@ -182,7 +214,7 @@ public class StoryOne implements ICrossingStrategy {
         raft.setPassengerList(getList(undo));
         raft.setPlace(undo.getRaftplace());
         farmer.setPlace(undo.getPlace1());
-
+        raft.setMoves(undo.getMoves());
         wolf.setPlace(undo.getPlace2());
         sheep.setPlace(undo.getPlace3());
         vegetables.setPlace(undo.getPlace4());
@@ -254,7 +286,7 @@ public class StoryOne implements ICrossingStrategy {
     }
 
     public int[] momentodata() {
-        int arr[] = new int[17];
+        int arr[] = new int[18];
         arr[0] = raft.getPosX();
         arr[1] = raft.getPosY();
 
@@ -278,6 +310,7 @@ public class StoryOne implements ICrossingStrategy {
         arr[14] = vegetables.getPlace();
         arr[15] = 0;
         arr[16] = raft.getPassengers();
+        arr[17] = raft.getMoves();
         return arr;
     }
 

@@ -50,7 +50,7 @@ public class Cat implements ICrosser{
         this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
     }
     
-public void move(MouseEvent e,Raft raft) {
+public void move(MouseEvent e,Raft raft,Side left) {
     
         if (rec.contains(e.getX(), e.getY())) {
             if (place == 0&&raft.getPassengers() < 2&&raft.getPlace()==0) {
@@ -58,6 +58,7 @@ public void move(MouseEvent e,Raft raft) {
                 posY -= 5;
                 setRec(rec);
                 place++;
+                left.leftRaft.remove(new Integer(this.getId()));
                 raft.addList(this);
                 raft.setPassengers(raft.getPassengers()+1);
                 raft.setWeightsum(raft.getWeightsum()+weight);
@@ -67,6 +68,7 @@ public void move(MouseEvent e,Raft raft) {
                 posY += 5;
                 setRec(rec);
                 place--;
+                left.leftRaft.add(this.getId());
                 raft.removeList(this);
                 raft.setPassengers(raft.getPassengers()-1);
                 raft.setWeightsum(raft.getWeightsum()-weight);
@@ -109,7 +111,10 @@ public void move(MouseEvent e,Raft raft) {
     public int getEatingRank() {
         return 1;
     }
-
+public void removeRec()
+    {
+        this.rec = new Rectangle2D(1000, 1000, bi.getWidth(), bi.getHeight());
+    }
     @Override
     public BufferedImage getImages() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
