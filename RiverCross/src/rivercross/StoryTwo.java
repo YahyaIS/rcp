@@ -46,6 +46,7 @@ public class StoryTwo implements ICrossingStrategy {
     private Momento m = new Momento();
     private Momento momento;
     private boolean x = false;
+    private boolean f = true;
     private Stack<Momento> undo = new Stack<>();
     private Stack<Momento> redo = new Stack<>();
     private Menu menu;
@@ -65,6 +66,25 @@ public class StoryTwo implements ICrossingStrategy {
             public void handle(long l) {
 
                 bg.drawBackground(gc, waterpic);
+                if(f){
+                gc.drawImage(options.getIImage(), 200, 100);
+                gc.drawImage(options.getXImage(),750 , 125);
+                gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.RED);
+                    gc.setFont(Font.font(16));
+                    gc.fillText("1. The boat cannot bear a load heavier than 100 kg." , 500, 170);
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.RED);
+                    gc.setFont(Font.font(15));
+                    gc.fillText("2. All farmers can raft, while the animal cannot." , 500, 250);
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.RED);
+                    gc.setFont(Font.font(15));
+                    gc.fillText("How can they all get to the other side with their animal?", 500, 350);
+                }
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
@@ -103,6 +123,10 @@ public class StoryTwo implements ICrossingStrategy {
                 }
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
+                            if (options.getXRec().contains(e.getX(), e.getY())) {
+                                f=false;
+                                
+                            }
                             if (raft.getMoveRec().contains(e.getX(), e.getY())) {
                                 if (raft.getWeightsum() <= 100 && isValid(null, null, raft.passengerList)) {
                                     if (x == false) {
@@ -177,6 +201,7 @@ public class StoryTwo implements ICrossingStrategy {
             raftY = raft.getPosY();
             raftR = raft.getRec();
             h = false;
+            f= true;
         }
         options.setRec();
         m.setRec();

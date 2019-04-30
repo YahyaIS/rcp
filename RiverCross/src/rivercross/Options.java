@@ -17,15 +17,20 @@ public class Options {
     private int backPosY;
     private Rectangle2D restartRec;
     private Rectangle2D saveRec;
+    private Rectangle2D xRec;
     private int restartPosX;
     private int savePosX;
     private int savePosY;
     private int restartPosY;
+    private int xRecposX;
+    private int xRecposY;
     BufferedImage bi = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bir = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bs = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bw = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
-
+    BufferedImage bx = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    BufferedImage bn = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    
     public Rectangle2D getSaveRec() {
         return saveRec;
     }
@@ -38,6 +43,18 @@ public class Options {
         return savePosY;
     }
 
+    public int getxRecposX() {
+        return xRecposX;
+    }
+
+    public int getxRecposY() {
+        return xRecposY;
+    }
+    
+    
+    
+    
+
     public Options() {
         backPosX = 50;
         backPosY = 150;
@@ -45,6 +62,8 @@ public class Options {
         restartPosY = 200;
         savePosX = 890;
         savePosY = 70;
+        xRecposX = 750;
+        xRecposY = 125;
         File input_file = new File("backButton.png");
         try {
             bi = ImageIO.read(input_file);
@@ -73,6 +92,19 @@ public class Options {
         } catch (IOException ex) {
             Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
         }
+        File input_file4 = new File("i.png");
+        try {
+            bn = ImageIO.read(input_file4);
+        } catch (IOException ex) {
+            Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        File x = new File("x.png");
+        try {
+            bx = ImageIO.read(x);
+        } catch (IOException ex) {
+            Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.xRec = new Rectangle2D(xRecposX, xRecposY, bx.getWidth(), bx.getHeight());
 
     }
 
@@ -108,6 +140,16 @@ public class Options {
         return image;
 
     }
+    public javafx.scene.image.Image getIImage() {
+        Image image = SwingFXUtils.toFXImage(this.bn, null);
+        return image;
+
+    }
+    public javafx.scene.image.Image getXImage() {
+        Image image = SwingFXUtils.toFXImage(this.bx, null);
+        return image;
+
+    }
     
     
     
@@ -137,6 +179,10 @@ public class Options {
 
     public int getRestartPosY() {
         return restartPosY;
+    }
+    
+    public Rectangle2D getXRec() {
+        return xRec;
     }
 
 }

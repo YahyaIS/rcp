@@ -57,7 +57,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
                 raft.setPassengers(raft.getPassengers()+1);
                 
             } else if (place == 1) {
-                posX -= 230;
+                posX -= 229;
                 //posY += 15;
                 setRec(rec);
                 place--;
@@ -77,7 +77,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
             }
             else if(place==3&&raft.getPassengers() < 2&&raft.getPlace()==1)
             {
-                posX-=230;
+                posX-=229;
                // posY-=15;
                 setRec(rec);
                 place--;
