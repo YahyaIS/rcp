@@ -37,6 +37,7 @@ public class StoryOne implements ICrossingStrategy {
     private Wolf wolf = new Wolf();
     private Sheep sheep = new Sheep();
     private boolean x = false;
+    private boolean f = true;
     private Momento m = new Momento();
     private Momento momento;
     private Stack<Momento> undo = new Stack<>();
@@ -56,7 +57,27 @@ public class StoryOne implements ICrossingStrategy {
 
             @Override
             public void handle(long l) {
-                bg.drawBackground(gc, waterpic);
+                 bg.drawBackground(gc, waterpic);
+                if(f){
+                gc.drawImage(options.getIImage(), 200, 100);
+                gc.drawImage(options.getXImage(),750 , 125);
+                gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.RED);
+                    gc.setFont(Font.font(16));
+                    gc.fillText("1. The farmer is the only one who can sail the boat.\n" +
+                    "He can only take one passenger, in addition to himself. " , 500, 170);
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.RED);
+                    gc.setFont(Font.font(15));
+                    gc.fillText("2. You can not leave any two crossers on the same bank \n" + "if they can harm(eat) each other" , 500, 250);
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setTextBaseline(VPos.CENTER);
+                    gc.setFill(Color.RED);
+                    gc.setFont(Font.font(15));
+                    gc.fillText("How can the farmer get across the river \n" + "with all the 2 animals and the plant without any losses?", 500, 350);
+                }
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
@@ -93,7 +114,11 @@ public class StoryOne implements ICrossingStrategy {
                 }
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
-
+                            if (options.getXRec().contains(e.getX(), e.getY())) {
+                                f=false;
+                                
+                            }
+                        
                             if (raft.getMoveRec().contains(e.getX(), e.getY())) {
                                 if (isValid(getList(right.rightRaft), getList(left.leftRaft), raft.passengerList)) {
                                     if (x == false) {
@@ -139,6 +164,7 @@ public class StoryOne implements ICrossingStrategy {
                                     ex.printStackTrace();
                                 }
                             }
+                            
                         });
             }
 
@@ -164,6 +190,7 @@ public class StoryOne implements ICrossingStrategy {
             raftY = raft.getPosY();
             raftRec = raft.getRec();
             h = false;
+            f= true;
         }
         m.setRec();
         options.setRec();
