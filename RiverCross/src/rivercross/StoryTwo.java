@@ -201,8 +201,8 @@ public class StoryTwo implements ICrossingStrategy {
             raftY = raft.getPosY();
             raftR = raft.getRec();
             h = false;
-            f= true;
         }
+        f= true;
         options.setRec();
         m.setRec();
         farmer1.setPosX(farmer1X);

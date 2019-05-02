@@ -12,7 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class Main extends Application {
 
     List<Water> waterpic = new ArrayList<>();
-    BackGround bg = new BackGround();
+    BackGround bg = BackGround.getInstance();
     Menu menu=new Menu();
   //  Xml x//ml=new Xml();
     @Override

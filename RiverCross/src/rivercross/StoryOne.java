@@ -5,10 +5,7 @@
  */
 package rivercross;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -96,7 +93,7 @@ public class StoryOne implements ICrossingStrategy {
                 gc.setFill(Color.BLACK);
                 gc.setFont(Font.font(15));
                 gc.fillText("Moves : " + raft.getMoves(), 70, 270);
-                if (left.leftRaft.isEmpty() && raft.passengerList.isEmpty()) {
+                if (left.leftRaft.isEmpty() && raft.passengerList.isEmpty()&&wincheck(right.rightRaft)) {
                     farmer.removeRec();
                     wolf.removeRec();
                     sheep.removeRec();
@@ -129,14 +126,36 @@ public class StoryOne implements ICrossingStrategy {
                                     raft.move(e);
                                     momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                     undo.add(momento);
+                                    System.out.println("Passenger List"+momento.passengerList);
+                                    System.out.println("Left Side"+momento.getLeft());
+                                    System.out.println("Right Side"+momento.getRight());
+
                                 }
+                                System.out.print("Left Side : ");
+
+                                for(int i:left.leftRaft) {
+                                    System.out.print(" "+i+" ");
+                                }
+                                System.out.println("\n");
+                                System.out.print("Right Side");
+                                for(int i:right.rightRaft) {
+                                    System.out.print(" "+i+" ");
+                                }
+                                System.out.println("\n");
+                                System.out.print("Raft : ");
+                                for(int i:raft.getPassengerList()) {
+                                    System.out.print(" "+i+" ");
+                                }
+                                System.out.println("\n\n");
+
+
                             } else if (farmer.getRec().contains(e.getX(), e.getY())) {
                                 farmer.move(e, raft, left, right);
+                            }else if (sheep.getRec().contains(e.getX(), e.getY())) {
+                                sheep.move(e, raft, left, right);
                             } else if (wolf.getRec().contains(e.getX(), e.getY())) {
                                 wolf.move(e, raft, left, right);
-                            } else if (sheep.getRec().contains(e.getX(), e.getY())) {
-                                sheep.move(e, raft, left, right);
-                            } else if (vegetables.getRec().contains(e.getX(), e.getY())) {
+                            }  else if (vegetables.getRec().contains(e.getX(), e.getY())) {
                                 vegetables.move(e, raft, left, right);
 
                             } else if (m.getUndorec().contains(e.getX(), e.getY()) && !undo.isEmpty() && undo.size() != 1) {
@@ -190,8 +209,9 @@ public class StoryOne implements ICrossingStrategy {
             raftY = raft.getPosY();
             raftRec = raft.getRec();
             h = false;
-            f= true;
+
         }
+        f= true;
         m.setRec();
         options.setRec();
         raft.setMoves(0);
@@ -236,8 +256,10 @@ public class StoryOne implements ICrossingStrategy {
         wolf.setPosY(undo.getChar3Y());
         sheep.setPosX(undo.getChar4X());
         sheep.setPosY(undo.getChar4Y());
+
         left.setLeftRaft(undo.getLeft());
         right.setRightRaft(undo.getRight());
+
         raft.setPassengerList(getList(undo));
         raft.setPlace(undo.getRaftplace());
         farmer.setPlace(undo.getPlace1());
@@ -390,6 +412,19 @@ public class StoryOne implements ICrossingStrategy {
             passengerList.clear();
             return crosser;
         }
+    }
+
+    public boolean wincheck(List<Integer>rightSide){
+        Collections.sort(rightSide);
+        int k=1;
+        for(int i:rightSide){
+            if(i==k){
+                k++;
+            }
+            else
+                return false;
+        }
+        return true;
     }
 
 }

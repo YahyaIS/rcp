@@ -38,7 +38,8 @@ public class Wolf implements ICrosser{
         
         posX=60;
         posY=400;
-        this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+        this.rec = new Rectangle2D(posX,posY,bi.getWidth()-25,bi.getHeight());
+
     }
     
 public void move(MouseEvent e,Raft raft,Side left, Side right) {
@@ -156,7 +157,7 @@ public void move(MouseEvent e,Raft raft,Side left, Side right) {
     }
 public void removeRec()
     {
-        this.rec = new Rectangle2D(1000, 1000, bi.getWidth(), bi.getHeight());
+        this.rec = new Rectangle2D(1000, 1000, bi.getWidth()-25, bi.getHeight()-15);
     }
     public javafx.scene.image.Image getImage(){
         Image image = SwingFXUtils.toFXImage(this.bi, null);

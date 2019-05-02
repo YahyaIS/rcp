@@ -20,7 +20,8 @@ import javax.imageio.ImageIO;
 public class Menu {
     StoryOne storyOne = new StoryOne();
     StoryTwo storyTwo = new StoryTwo();
-    BackGround bg = new BackGround();
+
+    BackGround bg =BackGround.getInstance();
     List<Water> waterpic = new ArrayList<>();
     BufferedImage bi1 = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
     Image image1;

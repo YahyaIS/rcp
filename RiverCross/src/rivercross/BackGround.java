@@ -15,10 +15,20 @@ import javax.imageio.ImageIO;
 
 public class BackGround {
     //Water water;
+
+    private static BackGround instance;
     
     
-    
-    public BackGround(){
+    private BackGround(){
+    }
+    public static BackGround getInstance (){
+
+        if (instance == null)
+
+            instance = new BackGround();
+
+        return instance;
+
     }
 
     public void drawBackground(GraphicsContext gc, List<Water> waterpic) {
