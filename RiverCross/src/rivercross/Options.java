@@ -30,6 +30,7 @@ public class Options {
     BufferedImage bw = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bx = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     BufferedImage bn = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    BufferedImage br = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
     
     public Rectangle2D getSaveRec() {
         return saveRec;
@@ -92,6 +93,15 @@ public class Options {
         } catch (IOException ex) {
             Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        File input_file5 = new File("w.png");
+        try {
+            br = ImageIO.read(input_file5);
+        } catch (IOException ex) {
+            Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         File input_file4 = new File("i.png");
         try {
             bn = ImageIO.read(input_file4);
@@ -151,6 +161,12 @@ public class Options {
     }
     public javafx.scene.image.Image getXImage() {
         Image image = SwingFXUtils.toFXImage(this.bx, null);
+        return image;
+
+    }
+    
+    public javafx.scene.image.Image getWrImage() {
+        Image image = SwingFXUtils.toFXImage(this.br, null);
         return image;
 
     }

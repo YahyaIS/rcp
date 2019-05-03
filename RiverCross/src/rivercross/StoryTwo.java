@@ -43,6 +43,7 @@ public class StoryTwo implements ICrossingStrategy ,IRiverCrossingController{
     private Farmer1 farmer3 = new Farmer1(3);
     private Farmer1 farmer4 = new Farmer1(4);
     private Cat cat = new Cat();
+    private boolean s=false;
     private Human human = new Human();
     private Momento m = new Momento();
     private Momento momento;
@@ -85,6 +86,14 @@ public class StoryTwo implements ICrossingStrategy ,IRiverCrossingController{
                     gc.fillText(instructions[2] , 500, 300);
                     gc.fillText(instructions[3], 500, 370);
                 }
+                if(s){
+                    gc.drawImage(options.getWrImage(), 450, 220);
+                     gc.setTextAlign(TextAlignment.CENTER);
+                     gc.setTextBaseline(VPos.CENTER);
+                     gc.setFill(Color.RED);
+                     gc.setFont(Font.font(13));
+                     gc.fillText("invalid move!", 505, 250);                                                                     
+                }
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
@@ -104,6 +113,7 @@ public class StoryTwo implements ICrossingStrategy ,IRiverCrossingController{
                 gc.setFill(Color.BLACK);
                 gc.setFont(Font.font(15));
                 gc.fillText("Moves : " + raft.getMoves(), 70, 270);
+                gc.fillText("raft weight : " + raft.getWeightsum(), 70, 290);
                 if (left.leftRaft.isEmpty() && raft.passengerList.isEmpty()) {
                     farmer1.removeRec();
                     farmer2.removeRec();
@@ -137,33 +147,50 @@ public class StoryTwo implements ICrossingStrategy ,IRiverCrossingController{
                                         momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                         undo.add(momento);
                                         x = true;
+                                         s=false;
                                     }
                                     raft.move(e);
                                     momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                     undo.add(momento);
+                                     s=true;
+                                }
+                                else{
+                                   s=true;
+                                    
+                                    System.out.println("hhh");
                                 }
                             } else if (farmer1.getRec().contains(e.getX(), e.getY())) {
                                 farmer1.move(e, raft,left);
+                                 s=false;
                             } else if (farmer2.getRec().contains(e.getX(), e.getY())) {
                                 farmer2.move(e, raft,left);
+                                 s=false;
                             } else if (farmer3.getRec().contains(e.getX(), e.getY())) {
                                 farmer3.move(e, raft,left);
+                                 s=false;
                             } else if (farmer4.getRec().contains(e.getX(), e.getY())) {
                                 farmer4.move(e, raft,left);
+                                 s=false;
 
                             } else if (cat.getRec().contains(e.getX(), e.getY())) {
                                 cat.move(e, raft,left);
+                                 s=false;
                             } else if (m.getUndorec().contains(e.getX(), e.getY()) && !undo.isEmpty() && undo.size() != 1) {
                                 undo();
+                                 s=false;
                             } else if (m.getRedorec().contains(e.getX(), e.getY()) && !redo.isEmpty()) {
                                 redo();
+                                 s=false;
                             } else if (options.getBackRec().contains(e.getX(), e.getY())) {
                                 newGame(null);
                                 menu.draw(scene, gc);
+                                 s=false;
                             } else if (options.getRestartRec().contains(e.getX(), e.getY())) {
                                 newGame(null);
+                                 s=false;
                             } else if (options.getSaveRec().contains(e.getX(), e.getY())) {
                                 saveGame();
+                                 s=false;
                             }
                         });
             }

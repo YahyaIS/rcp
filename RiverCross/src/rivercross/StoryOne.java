@@ -10,6 +10,7 @@ import command.Redo;
 import command.Command;
 import command.Invoker;
 import command.Save;
+import java.time.Duration;
 import java.util.*;
 
 import javafx.animation.AnimationTimer;
@@ -42,6 +43,8 @@ public class StoryOne implements ICrossingStrategy , IRiverCrossingController{
     private Sheep sheep = new Sheep();
     private boolean x = false;
     private boolean f = true;
+    private boolean s = false;
+    private int i=0;
     private Momento m = new Momento();
     private Momento momento;
     private Stack<Momento> undo = new Stack<>();
@@ -58,6 +61,10 @@ public class StoryOne implements ICrossingStrategy , IRiverCrossingController{
         }
 
         new AnimationTimer() {
+            
+            
+            
+           
 
             @Override
             public void handle(long l) {
@@ -78,6 +85,17 @@ public class StoryOne implements ICrossingStrategy , IRiverCrossingController{
                     gc.fillText(instructions[1]  , 500, 250);
                     gc.fillText(instructions[2], 500, 350);
                 }
+                
+                if(s){
+                    gc.drawImage(options.getWrImage(), 450, 220);
+                     gc.setTextAlign(TextAlignment.CENTER);
+                     gc.setTextBaseline(VPos.CENTER);
+                     gc.setFill(Color.RED);
+                     gc.setFont(Font.font(13));
+                     gc.fillText("invalid move!", 505, 250);                                                                     
+                }
+                
+                
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
                 gc.drawImage(raft.getImage(), raft.getPosX(), raft.getPosY());
@@ -129,30 +147,46 @@ public class StoryOne implements ICrossingStrategy , IRiverCrossingController{
                                         momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                         undo.add(momento);
                                         x = true;
+                                         s=true;
                                     }
                                     raft.move(e);
                                     momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                     undo.add(momento);
+                                    s=false;
+                                }
+                              else{
+                                   s=true;
+                                    
+                                    System.out.println("hhh");
                                 }
                             } else if (farmer.getRec().contains(e.getX(), e.getY())) {
                                 farmer.move(e, raft, left, right);
+                                s=false;
                             }else if (sheep.getRec().contains(e.getX(), e.getY())) {
                                 sheep.move(e, raft, left, right);
+                                s=false;
                             } else if (wolf.getRec().contains(e.getX(), e.getY())) {
                                 wolf.move(e, raft, left, right);
+                                s=false;
                             }  else if (vegetables.getRec().contains(e.getX(), e.getY())) {
                                 vegetables.move(e, raft, left, right);
+                                s=false;
                             } else if (m.getUndorec().contains(e.getX(), e.getY()) && canUndo() && undo.size() != 1) {
                                 undo();
+                                s=false;
                             } else if (m.getRedorec().contains(e.getX(), e.getY()) && canRedo()) {
                                 redo();
+                                s=false;
                             } else if (options.getBackRec().contains(e.getX(), e.getY())) {
                                 newGame(null);
                                 menu.draw(scene, gc);
+                                s=false;
                             } else if (options.getRestartRec().contains(e.getX(), e.getY())) {
                                 newGame(null);
+                                s=false;
                             } else if (options.getSaveRec().contains(e.getX(), e.getY())) {
                                 saveGame();
+                                s=false;
                             }
                         });
             }
@@ -487,6 +521,8 @@ public class StoryOne implements ICrossingStrategy , IRiverCrossingController{
         }
         return true;
     }
+
+    
 
     
 
