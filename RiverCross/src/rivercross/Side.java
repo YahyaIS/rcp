@@ -19,6 +19,11 @@ import javafx.embed.swing.SwingFXUtils;
 
 public class Side {
 
+
+    List<Integer> leftRaft = new ArrayList<>();
+    List<Integer> rightRaft = new ArrayList<>();
+    private int xPos;
+    private int YPos;
     public void setLeftRaft(List<Integer> leftRaft) {
         this.leftRaft = leftRaft;
     }
@@ -34,11 +39,6 @@ public class Side {
     public List<Integer> getRightRaft() {
         return rightRaft;
     }
-
-    List<Integer> leftRaft = new ArrayList<>();
-    List<Integer> rightRaft = new ArrayList<>();
-    private int xPos;
-    private int YPos;
 
     public int getxPos() {
         return xPos;
