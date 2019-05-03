@@ -3,24 +3,26 @@
     <catPlace>0</catPlace>
     <catX>0</catX>
     <catY>0</catY>
-    <char1X>240</char1X>
+    <char1X>685</char1X>
     <char1Y>345</char1Y>
     <char2X>2</char2X>
     <char2Y>445</char2Y>
     <char3X>60</char3X>
     <char3Y>400</char3Y>
-    <char4X>930</char4X>
+    <char4X>700</char4X>
     <char4Y>426</char4Y>
+    <left>2</left>
     <left>4</left>
-    <moves>2</moves>
+    <moves>1</moves>
     <passengerList>1</passengerList>
-    <passengers>1</passengers>
-    <place1>1</place1>
+    <passengerList>3</passengerList>
+    <passengers>2</passengers>
+    <place1>2</place1>
     <place2>0</place2>
-    <place3>3</place3>
+    <place3>2</place3>
     <place4>0</place4>
-    <raftX>180</raftX>
+    <raftX>640</raftX>
     <raftY>400</raftY>
-    <raftplace>0</raftplace>
-    <right>3</right>
+    <raftplace>1</raftplace>
+    <right>-1</right>
 </momento>

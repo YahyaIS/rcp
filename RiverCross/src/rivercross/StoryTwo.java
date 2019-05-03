@@ -27,11 +27,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-public class StoryTwo implements ICrossingStrategy {
+public class StoryTwo implements ICrossingStrategy, IRiverCrossingController {
 
     private boolean h = true;
     Xml xm = new Xml("Save.xml");
-
+    ICrossingStrategy gameStrategy;
     private Options options = new Options();
     private Side left = new Side(1);
     private Side right = new Side(2);
@@ -157,22 +157,16 @@ public class StoryTwo implements ICrossingStrategy {
                                 setPositions(undo.peek());
                                 setAllRec();
                             } else if (m.getRedorec().contains(e.getX(), e.getY()) && !redo.isEmpty()) {
-                                raft.setMoves(raft.getMoves() + 1);
-                                setPositions(redo.peek());
-                                undo.push(redo.pop());
-                                setAllRec();
+                               if(canRedo()){
+                                   redo();
+                               }
                             } else if (options.getBackRec().contains(e.getX(), e.getY())) {
-                                initPos();
+                                newGame(gameStrategy);
                                 menu.draw(scene, gc);
                             } else if (options.getRestartRec().contains(e.getX(), e.getY())) {
-                                initPos();
+                                newGame(gameStrategy);
                             } else if (options.getSaveRec().contains(e.getX(), e.getY())) {
-                                Xml x = new Xml("Level2.xml");
-                                try {
-                                    x.createXml(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
+                               saveGame();
                             }
                         });
             }
@@ -180,65 +174,6 @@ public class StoryTwo implements ICrossingStrategy {
         }.start();
     }
 
-    public void initPos() {
-        if (h == true) {
-            farmer1X = farmer1.getPosX();
-            farmer1Y = farmer1.getPosY();
-            farmer1R = farmer1.getRec();
-            farmer2X = farmer2.getPosX();
-            farmer2Y = farmer2.getPosY();
-            farmer2R = farmer2.getRec();
-            farmer3X = farmer3.getPosX();
-            farmer3Y = farmer3.getPosY();
-            farmer3R = farmer3.getRec();
-            farmer4X = farmer4.getPosX();
-            farmer4Y = farmer4.getPosY();
-            farmer4R = farmer4.getRec();
-            catX = cat.getPosX();
-            catY = cat.getPosY();
-            catR = cat.getRec();
-            raftX = raft.getPosX();
-            raftY = raft.getPosY();
-            raftR = raft.getRec();
-            h = false;
-        }
-        f= true;
-        options.setRec();
-        m.setRec();
-        farmer1.setPosX(farmer1X);
-        farmer1.setPosY(farmer1Y);
-        farmer1.setRec(farmer1R);
-        farmer1.setPlace(0);
-        farmer2.setPosX(farmer2X);
-        farmer2.setPosY(farmer2Y);
-        farmer2.setRec(farmer2R);
-        farmer2.setPlace(0);
-        farmer3.setPosX(farmer3X);
-        farmer3.setPosY(farmer3Y);
-        farmer3.setRec(farmer3R);
-        farmer3.setPlace(0);
-        farmer4.setPosX(farmer4X);
-        farmer4.setPosY(farmer4Y);
-        farmer4.setRec(farmer4R);
-        farmer4.setPlace(0);
-        cat.setPosX(catX);
-        cat.setPosY(catY);
-        cat.setRec(catR);
-        cat.setPlace(0);
-        raft.setPosX(raftX);
-        raft.setPosY(raftY);
-        raft.setRec(raftR);
-        raft.setPlace(0);
-        raft.setPassengers(0);
-        raft.setWeightsum(0);
-        raft.passengerList.clear();
-        left.leftRaft.clear();
-        getInitialCrossers();
-        right.rightRaft.clear();
-        undo.clear();
-        undo.push(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
-        redo.clear();
-    }
 
     @Override
     public boolean isValid(List<ICrosser> rightBankCrossers, List<ICrosser> leftBankCrossers, List<ICrosser> boatRiders) {
@@ -273,10 +208,6 @@ public class StoryTwo implements ICrossingStrategy {
         return crossers;
     }
 
-    @Override
-    public String[] getInstructions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public void setAllRec() {
         Rectangle2D rec1 = new Rectangle2D(farmer1.getPosX(), farmer1.getPosY(), farmer1.bi.getWidth(),
@@ -339,7 +270,6 @@ public class StoryTwo implements ICrossingStrategy {
         farmer4.setPosX(m.getChar4X());
         farmer4.setPosY(m.getChar4Y());
         raft.setPassengerList(getList(m));
-        left.setLeftRaft(m.getLeft());
         raft.setPlace(m.getRaftplace());
         farmer1.setPlace(m.getPlace1());
         farmer2.setPlace(m.getPlace2());
@@ -350,6 +280,9 @@ public class StoryTwo implements ICrossingStrategy {
         cat.setPosY(m.getCatY());
         cat.setPlace(m.getCatPlace());
         raft.setPassengers(m.getPassengers());
+
+        left.setLeftRaft(sideObjects(0));
+        right.setRightRaft(sideObjects(4));
     }
 
     public void setMenu(Menu menu) {
@@ -381,5 +314,177 @@ public class StoryTwo implements ICrossingStrategy {
             return crosser;
         }
     }
+    public List<Integer> sideObjects(int place){
+        List<Integer>side=new ArrayList<>();
+        if(farmer1.getPlace()==place){
+            side.add(1);
+        }
+        if(farmer2.getPlace()==place){
+            side.add(2);
+        }
+        if(farmer3.getPlace()==place){
+            side.add(3);
+        }
+        if(farmer4.getPlace()==place){
+            side.add(4);
+        }
+        if(cat.getPlace()==place){
+            side.add(5);
+        }
+        return side;
+    }
+
+    @Override
+    public void newGame(ICrossingStrategy gameStrategy) {
+        if (h == true) {
+            farmer1X = farmer1.getPosX();
+            farmer1Y = farmer1.getPosY();
+            farmer1R = farmer1.getRec();
+            farmer2X = farmer2.getPosX();
+            farmer2Y = farmer2.getPosY();
+            farmer2R = farmer2.getRec();
+            farmer3X = farmer3.getPosX();
+            farmer3Y = farmer3.getPosY();
+            farmer3R = farmer3.getRec();
+            farmer4X = farmer4.getPosX();
+            farmer4Y = farmer4.getPosY();
+            farmer4R = farmer4.getRec();
+            catX = cat.getPosX();
+            catY = cat.getPosY();
+            catR = cat.getRec();
+            raftX = raft.getPosX();
+            raftY = raft.getPosY();
+            raftR = raft.getRec();
+            h = false;
+        }
+        f= true;
+        options.setRec();
+        m.setRec();
+        farmer1.setPosX(farmer1X);
+        farmer1.setPosY(farmer1Y);
+        farmer1.setRec(farmer1R);
+        farmer1.setPlace(0);
+        farmer2.setPosX(farmer2X);
+        farmer2.setPosY(farmer2Y);
+        farmer2.setRec(farmer2R);
+        farmer2.setPlace(0);
+        farmer3.setPosX(farmer3X);
+        farmer3.setPosY(farmer3Y);
+        farmer3.setRec(farmer3R);
+        farmer3.setPlace(0);
+        farmer4.setPosX(farmer4X);
+        farmer4.setPosY(farmer4Y);
+        farmer4.setRec(farmer4R);
+        farmer4.setPlace(0);
+        cat.setPosX(catX);
+        cat.setPosY(catY);
+        cat.setRec(catR);
+        cat.setPlace(0);
+        raft.setPosX(raftX);
+        raft.setPosY(raftY);
+        raft.setRec(raftR);
+        raft.setPlace(0);
+        raft.setPassengers(0);
+        raft.setWeightsum(0);
+        raft.passengerList.clear();
+        left.leftRaft.clear();
+        getInitialCrossers();
+        right.rightRaft.clear();
+        undo.clear();
+        undo.push(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
+        redo.clear();
+    }
+
+    @Override
+    public void resetGame() {
+    }
+
+    @Override
+    public String[] getInstructions() {
+        String[] instructions = new String[4];
+        instructions[0]="1. The farmer is the only one who can sail the boat.\n" +"He can only take one passenger, in addition to himself. ";
+        instructions[1]="2. You can not leave any two crossers on the same bank \n" + "if they can harm(eat) each other";
+        instructions[2]="How can the farmer get across the river \n" + "with all the 2 animals and the plant without any losses?";
+        return instructions;
+    }
+
+    @Override
+    public List<ICrosser> getCrossersOnRightBank() {
+        return null;
+    }
+
+    @Override
+    public List<ICrosser> getCrossersOnLeftBank() {
+        return null;
+    }
+
+    @Override
+    public boolean isBoatOnTheLeftBank() {
+        return raft.getPlace()==0?true:false;
+    }
+
+    @Override
+    public int getNumberOfSails() {
+        return raft.getMoves();
+    }
+
+    @Override
+    public boolean canMove(List<ICrosser> crossers, boolean fromLeftToRightBank) {
+        return false;
+    }
+
+    @Override
+    public void doMove(List<ICrosser> crossers, boolean fromLeftToRightBank) {
+
+    }
+
+    @Override
+    public boolean canUndo() {
+        return !undo.isEmpty();
+    }
+
+    @Override
+    public boolean canRedo() {
+        return !redo.isEmpty();
+    }
+
+    @Override
+    public void undo() {
+        if (raft.getMoves() > 0) {
+            raft.setMoves(raft.getMoves() - 1);
+        }
+        redo.push(undo.pop());
+        setPositions(undo.peek());
+        setAllRec();
+    }
+
+    @Override
+    public void redo() {
+        raft.setMoves(raft.getMoves() + 1);
+        setPositions(redo.peek());
+        undo.push(redo.pop());
+        setAllRec();
+    }
+
+    @Override
+    public void saveGame() {
+        Xml x = new Xml("Level2.xml");
+        try {
+            x.createXml(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadGame() {
+
+    }
+
+    @Override
+    public List<List<ICrosser>> solveGame() {
+        return null;
+    }
+
 
 }

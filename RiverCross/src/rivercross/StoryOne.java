@@ -22,7 +22,7 @@ import javafx.scene.text.TextAlignment;
  *
  * @author seif
  */
-public class StoryOne implements ICrossingStrategy {
+public class StoryOne implements ICrossingStrategy, IRiverCrossingController {
 
     List<Water> waterpic = new ArrayList<>();
     private Side left = new Side(1);
@@ -40,6 +40,7 @@ public class StoryOne implements ICrossingStrategy {
     private Stack<Momento> undo = new Stack<>();
     private Stack<Momento> redo = new Stack<>();
     private boolean h = true;
+    ICrossingStrategy gameStrategy;
     private Menu menu;
     private int farmerX, farmerY, wolfX, wolfY, sheepX, sheepY, vegetablesX, vegetablesY, raftX, raftY;
     private Rectangle2D farmerRec, wolfRec, sheepRec, vegetablesRec, raftRec;
@@ -56,24 +57,24 @@ public class StoryOne implements ICrossingStrategy {
             public void handle(long l) {
                  bg.drawBackground(gc, waterpic);
                 if(f){
+                    String instructions[]=getInstructions();
                 gc.drawImage(options.getIImage(), 200, 100);
                 gc.drawImage(options.getXImage(),750 , 125);
                 gc.setTextAlign(TextAlignment.CENTER);
                     gc.setTextBaseline(VPos.CENTER);
                     gc.setFill(Color.RED);
                     gc.setFont(Font.font(16));
-                    gc.fillText("1. The farmer is the only one who can sail the boat.\n" +
-                    "He can only take one passenger, in addition to himself. " , 500, 170);
+                    gc.fillText(instructions[0], 500, 170);
                     gc.setTextAlign(TextAlignment.CENTER);
                     gc.setTextBaseline(VPos.CENTER);
                     gc.setFill(Color.RED);
                     gc.setFont(Font.font(15));
-                    gc.fillText("2. You can not leave any two crossers on the same bank \n" + "if they can harm(eat) each other" , 500, 250);
+                    gc.fillText(instructions[1] , 500, 250);
                     gc.setTextAlign(TextAlignment.CENTER);
                     gc.setTextBaseline(VPos.CENTER);
                     gc.setFill(Color.RED);
                     gc.setFont(Font.font(15));
-                    gc.fillText("How can the farmer get across the river \n" + "with all the 2 animals and the plant without any losses?", 500, 350);
+                    gc.fillText(instructions[2], 500, 350);
                 }
                 gc.drawImage(left.getImage(), left.getxPos(), left.getYPos());
                 gc.drawImage(right.getImage(), right.getxPos(), right.getYPos());
@@ -126,29 +127,8 @@ public class StoryOne implements ICrossingStrategy {
                                     raft.move(e);
                                     momento = new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata());
                                     undo.add(momento);
-                                    System.out.println("Passenger List"+momento.passengerList);
-                                    System.out.println("Left Side"+momento.getLeft());
-                                    System.out.println("Right Side"+momento.getRight());
 
                                 }
-                                System.out.print("Left Side : ");
-
-                                for(int i:left.leftRaft) {
-                                    System.out.print(" "+i+" ");
-                                }
-                                System.out.println("\n");
-                                System.out.print("Right Side");
-                                for(int i:right.rightRaft) {
-                                    System.out.print(" "+i+" ");
-                                }
-                                System.out.println("\n");
-                                System.out.print("Raft : ");
-                                for(int i:raft.getPassengerList()) {
-                                    System.out.print(" "+i+" ");
-                                }
-                                System.out.println("\n\n");
-
-
                             } else if (farmer.getRec().contains(e.getX(), e.getY())) {
                                 farmer.move(e, raft, left, right);
                             }else if (sheep.getRec().contains(e.getX(), e.getY())) {
@@ -159,31 +139,22 @@ public class StoryOne implements ICrossingStrategy {
                                 vegetables.move(e, raft, left, right);
 
                             } else if (m.getUndorec().contains(e.getX(), e.getY()) && !undo.isEmpty() && undo.size() != 1) {
-                                if (raft.getMoves() > 0) {
-                                    raft.setMoves(raft.getMoves() - 1);
+                                if(canUndo()){
+                                    undo();
                                 }
-                                redo.push(undo.pop());
-                                setPositions(undo.peek());
-                                setAllRec();
                             } else if (m.getRedorec().contains(e.getX(), e.getY()) && !redo.isEmpty()) {
-                                raft.setMoves(raft.getMoves() + 1);
-                                setPositions(redo.peek());
-                                undo.push(redo.pop());
-                                setAllRec();
+                               if(canRedo()){
+                                   redo();
+                               }
                             } else if (options.getBackRec().contains(e.getX(), e.getY())) {
-                                initPos();
+                                newGame(gameStrategy);
                                 menu.draw(scene, gc);
                             } else if (options.getRestartRec().contains(e.getX(), e.getY())) {
-                                initPos();
+                                newGame(gameStrategy);
                             } else if (options.getSaveRec().contains(e.getX(), e.getY())) {
-                                Xml x = new Xml("Level1.xml");
-                                try {
-                                    x.createXml(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
+                                saveGame();
                             }
-                            
+
                         });
             }
 
@@ -191,59 +162,6 @@ public class StoryOne implements ICrossingStrategy {
 
     }
 
-    public void initPos() {
-        if (h == true) {
-            farmerX = farmer.getPosX();
-            farmerY = farmer.getPosY();
-            farmerRec = farmer.getRec();
-            wolfX = wolf.getPosX();
-            wolfY = wolf.getPosY();
-            wolfRec = wolf.getRec();
-            sheepX = sheep.getPosX();
-            sheepY = sheep.getPosY();
-            sheepRec = sheep.getRec();
-            vegetablesX = vegetables.getPosX();
-            vegetablesY = vegetables.getPosY();
-            vegetablesRec = vegetables.getRec();
-            raftX = raft.getPosX();
-            raftY = raft.getPosY();
-            raftRec = raft.getRec();
-            h = false;
-
-        }
-        f= true;
-        m.setRec();
-        options.setRec();
-        raft.setMoves(0);
-        farmer.setPosX(farmerX);
-        farmer.setPosY(farmerY);
-        farmer.setRec(farmerRec);
-        farmer.setPlace(0);
-        wolf.setPosX(wolfX);
-        wolf.setPosY(wolfY);
-        wolf.setRec(wolfRec);
-        wolf.setPlace(0);
-        sheep.setPosX(sheepX);
-        sheep.setPosY(sheepY);
-        sheep.setRec(sheepRec);
-        sheep.setPlace(0);
-        vegetables.setPosX(vegetablesX);
-        vegetables.setPosY(vegetablesY);
-        vegetables.setRec(vegetablesRec);
-        vegetables.setPlace(0);
-        raft.setPosX(raftX);
-        raft.setPosY(raftY);
-        raft.setRec(raftRec);
-        raft.setPlace(0);
-        raft.setPassengers(0);
-        raft.passengerList.clear();
-        left.leftRaft.clear();
-        getInitialCrossers();
-        right.rightRaft.clear();
-        undo.clear();
-        undo.push(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
-        redo.clear();
-    }
 
     public void setPositions(Momento undo) {
         raft.setPosX(undo.getRaftX());
@@ -256,10 +174,6 @@ public class StoryOne implements ICrossingStrategy {
         wolf.setPosY(undo.getChar3Y());
         sheep.setPosX(undo.getChar4X());
         sheep.setPosY(undo.getChar4Y());
-
-        left.setLeftRaft(undo.getLeft());
-        right.setRightRaft(undo.getRight());
-
         raft.setPassengerList(getList(undo));
         raft.setPlace(undo.getRaftplace());
         farmer.setPlace(undo.getPlace1());
@@ -268,6 +182,9 @@ public class StoryOne implements ICrossingStrategy {
         sheep.setPlace(undo.getPlace3());
         vegetables.setPlace(undo.getPlace4());
         raft.setPassengers(undo.getPassengers());
+
+        left.setLeftRaft(sideObjects(0));
+        right.setRightRaft(sideObjects(3));
     }
 
     @Override
@@ -311,11 +228,6 @@ public class StoryOne implements ICrossingStrategy {
         x.add(4);
         left.leftRaft = x;
         return crossers;
-    }
-
-    @Override
-    public String[] getInstructions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void setAllRec() {
@@ -425,6 +337,169 @@ public class StoryOne implements ICrossingStrategy {
                 return false;
         }
         return true;
+    }
+
+    public List<Integer> sideObjects(int place){
+        List<Integer>side=new ArrayList<>();
+        if(farmer.getPlace()==place){
+            side.add(1);
+        }
+        if(wolf.getPlace()==place){
+            side.add(2);
+        }
+        if(sheep.getPlace()==place){
+            side.add(3);
+        }
+        if(vegetables.getPlace()==place){
+            side.add(4);
+        }
+        return side;
+    }
+
+    @Override
+    public void newGame(ICrossingStrategy gameStrategy) {
+        if (h == true) {
+            farmerX = farmer.getPosX();
+            farmerY = farmer.getPosY();
+            farmerRec = farmer.getRec();
+            wolfX = wolf.getPosX();
+            wolfY = wolf.getPosY();
+            wolfRec = wolf.getRec();
+            sheepX = sheep.getPosX();
+            sheepY = sheep.getPosY();
+            sheepRec = sheep.getRec();
+            vegetablesX = vegetables.getPosX();
+            vegetablesY = vegetables.getPosY();
+            vegetablesRec = vegetables.getRec();
+            raftX = raft.getPosX();
+            raftY = raft.getPosY();
+            raftRec = raft.getRec();
+            h = false;
+
+        }
+        f= true;
+        m.setRec();
+        options.setRec();
+        raft.setMoves(0);
+        farmer.setPosX(farmerX);
+        farmer.setPosY(farmerY);
+        farmer.setRec(farmerRec);
+        farmer.setPlace(0);
+        wolf.setPosX(wolfX);
+        wolf.setPosY(wolfY);
+        wolf.setRec(wolfRec);
+        wolf.setPlace(0);
+        sheep.setPosX(sheepX);
+        sheep.setPosY(sheepY);
+        sheep.setRec(sheepRec);
+        sheep.setPlace(0);
+        vegetables.setPosX(vegetablesX);
+        vegetables.setPosY(vegetablesY);
+        vegetables.setRec(vegetablesRec);
+        vegetables.setPlace(0);
+        raft.setPosX(raftX);
+        raft.setPosY(raftY);
+        raft.setRec(raftRec);
+        raft.setPlace(0);
+        raft.setPassengers(0);
+        raft.passengerList.clear();
+        left.leftRaft.clear();
+        getInitialCrossers();
+        right.rightRaft.clear();
+        undo.clear();
+        undo.push(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
+        redo.clear();
+    }
+
+    @Override
+    public void resetGame() {
+    }
+
+    @Override
+    public String[] getInstructions() {
+        String[] instructions = new String[4];
+        instructions[0]="1. The farmer is the only one who can sail the boat.\n" +"He can only take one passenger, in addition to himself. ";
+        instructions[1]="2. You can not leave any two crossers on the same bank \n" + "if they can harm(eat) each other";
+        instructions[2]="How can the farmer get across the river \n" + "with all the 2 animals and the plant without any losses?";
+        return instructions;
+    }
+
+    @Override
+    public List<ICrosser> getCrossersOnRightBank() {
+        return null;
+    }
+
+    @Override
+    public List<ICrosser> getCrossersOnLeftBank() {
+        return null;
+    }
+
+    @Override
+    public boolean isBoatOnTheLeftBank() {
+        return raft.getPlace()==0?true:false;
+    }
+
+    @Override
+    public int getNumberOfSails() {
+        return raft.getMoves();
+    }
+
+    @Override
+    public boolean canMove(List<ICrosser> crossers, boolean fromLeftToRightBank) {
+        return false;
+    }
+
+    @Override
+    public void doMove(List<ICrosser> crossers, boolean fromLeftToRightBank) {
+
+    }
+
+    @Override
+    public boolean canUndo() {
+        return !undo.isEmpty();
+    }
+
+    @Override
+    public boolean canRedo() {
+        return !redo.isEmpty();
+    }
+
+    @Override
+    public void undo() {
+        if (raft.getMoves() > 0) {
+            raft.setMoves(raft.getMoves() - 1);
+        }
+        redo.push(undo.pop());
+        setPositions(undo.peek());
+        setAllRec();
+    }
+
+    @Override
+    public void redo() {
+        raft.setMoves(raft.getMoves() + 1);
+        setPositions(redo.peek());
+        undo.push(redo.pop());
+        setAllRec();
+    }
+
+    @Override
+    public void saveGame() {
+        Xml x = new Xml("Level1.xml");
+        try {
+            x.createXml(new Momento(left.getLeftRaft(), right.getRightRaft(), raft.getPassengerList(), momentodata()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadGame() {
+
+    }
+
+    @Override
+    public List<List<ICrosser>> solveGame() {
+        return null;
     }
 
 }

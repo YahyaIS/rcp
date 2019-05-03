@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 public class Menu {
     StoryOne storyOne = new StoryOne();
     StoryTwo storyTwo = new StoryTwo();
+    ICrossingStrategy igs;
 
     BackGround bg =BackGround.getInstance();
     List<Water> waterpic = new ArrayList<>();
@@ -118,18 +119,18 @@ public class Menu {
                     (EventHandler<MouseEvent>) e -> {
                         if (rec3.contains(e.getX(), e.getY())) {
                             if(level==1) {
-                                storyOne.initPos();
+                                storyOne.newGame(igs);
                                 storyOne.draw(theScene, gc, bg);
                             }
                             else
                             {
-                                storyTwo.initPos();
+                                storyTwo.newGame(igs);
                                 storyTwo.draw(theScene, gc, bg);
                             }
                         } else if (rec4.contains(e.getX(), e.getY())) {
                             if(level==1){
                                 Xml x=new Xml("Level1.xml");
-                                storyOne.initPos();
+                                storyOne.newGame(igs);
                                 storyOne.setPositions(x.ReadXml());
                                 storyOne.setAllRec();
                                 storyOne.draw(theScene, gc, bg);
@@ -137,7 +138,7 @@ public class Menu {
                             else
                             {
                                 Xml x=new Xml("Level2.xml");
-                                storyTwo.initPos();
+                                storyTwo.newGame(igs);
                                storyTwo.setPositions( x.ReadXml());
                                storyTwo.setAllRec();
                                storyTwo.draw(theScene,gc,bg);
