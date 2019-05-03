@@ -105,14 +105,18 @@ public class Options {
             Logger.getLogger(Raft.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.xRec = new Rectangle2D(xRecposX, xRecposY, bx.getWidth(), bx.getHeight());
-
     }
 
     public void removeRec() {
         this.backRec = new Rectangle2D(400, 250, bi.getWidth(), bi.getHeight());
         this.restartRec = new Rectangle2D(550, 250, bir.getWidth(), bir.getHeight());
     }
-
+    public void removeRecX() {
+        this.xRec = new Rectangle2D(1000, 1000, bx.getWidth(), bx.getHeight());
+    }
+    public void getRecX() {
+        this.xRec = new Rectangle2D(xRecposX, xRecposY, bx.getWidth(), bx.getHeight());
+    }
     public void setRec() {
         this.backRec = new Rectangle2D(backPosX,backPosY,bi.getWidth(),bi.getHeight());
         this.restartRec = new Rectangle2D(restartPosX,restartPosY,bir.getWidth(),bir.getHeight());

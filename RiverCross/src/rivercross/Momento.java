@@ -53,7 +53,7 @@ public class Momento {
     }
 
     private BufferedImage undoImage = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
-    private BufferedImage redoImage = new BufferedImage(500, 300, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage redoImage = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
     private Rectangle2D undorec;
     private Rectangle2D redorec;
     private List<Integer> left;

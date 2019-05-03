@@ -29,4 +29,11 @@ public interface ICrossingStrategy{
      * strategy, to be shown to the user
      */
     public String[] getInstructions();
+    
+    public int[] momentodata();
+    
+    public void setAllRec() ;
+    
+    public void setPositions(Momento undo) ;
+    
 }
